@@ -4,254 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WeatherWear - Smart Clothing Recommendations</title>
-  <style>
-    :root {
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --radius: 12px;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 2px solid var(--border);
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .unit-toggle-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    /* Common Card Styling */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-
-    /* Onboarding Section */
-    .hidden {
-      display: none !important;
-    }
-
-    .survey-group {
-      margin-bottom: 20px;
-    }
-
-    .survey-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .scale-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--primary);
-    }
-
-    .checkbox-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .checkbox-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    button.btn-primary {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: var(--radius);
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: background 0.2s;
-    }
-
-    button.btn-primary:hover {
-      background-color: var(--primary-hover);
-    }
-
-    /* Search & Location Bar */
-    .search-bar {
-      display: flex;
-      gap: 8px;
-    }
-
-    .search-bar input {
-      flex: 1;
-      padding: 10px 16px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      font-size: 1rem;
-    }
-
-    .search-bar button {
-      width: auto;
-      padding: 10px 20px;
-    }
-
-    /* Dashboard Layout */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .weather-info {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .temp-display {
-      font-size: 3rem;
-      font-weight: 800;
-      line-height: 1;
-    }
-
-    .outfit-category {
-      margin-bottom: 12px;
-    }
-
-    .outfit-category h4 {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .tag {
-      background: var(--bg);
-      padding: 4px 10px;
-      border-radius: 16px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    /* Chat Section */
-    .chat-container {
-      display: flex;
-      flex-direction: column;
-      height: 350px;
-    }
-
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-right: 8px;
-      margin-bottom: 12px;
-    }
-
-    .chat-bubble {
-      max-width: 80%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      font-size: 0.9rem;
-      line-height: 1.4;
-    }
-
-    .chat-bubble.bot {
-      background: var(--bg);
-      align-self: flex-start;
-      border-bottom-left-radius: 2px;
-    }
-
-    .chat-bubble.user {
-      background: var(--primary);
-      color: white;
-      align-self: flex-end;
-      border-bottom-right-radius: 2px;
-    }
-
-    .chat-input-form {
-      display: flex;
-      gap: 8px;
-    }
-
-    .chat-input-form input {
-      flex: 1;
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -261,85 +14,142 @@
       <button class="unit-toggle-btn" id="unitToggle">Unit: °F</button>
     </header>
 
-    <!-- SECTION 1: FIRST-TIME USER ONBOARDING SURVEY -->
+    <!-- STEP PROGRESS INDICATOR -->
+    <div id="stepIndicator" class="step-indicator-container">
+      <div class="step-badge active" id="badgeStep1">
+        <span class="step-number">1</span> Preferences
+      </div>
+      <div class="step-line"></div>
+      <div class="step-badge" id="badgeStep2">
+        <span class="step-number">2</span> Today's Weather
+      </div>
+    </div>
+
+    <!-- ONBOARDING FLOW -->
     <section id="onboardingSection" class="card">
-      <h2>Welcome! Customize Your Preferences</h2>
-      <p style="color: var(--text-muted); margin-bottom: 20px;">Help us understand your temperature tolerance and style choices.</p>
+      
+      <!-- STEP 1: USER PREFERENCES -->
+      <div id="step1Content">
+        <h2>Step 1: Customize Your Preferences</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Help us understand your temperature tolerance and style choices.</p>
 
-      <form id="preferencesForm">
-        <!-- Cold Sensitivity -->
+        <form id="preferencesForm">
+          <!-- Cold Sensitivity -->
+          <div class="survey-group">
+            <label for="coldScale">When do you start feeling COLD?</label>
+            <input type="range" id="coldScale" min="30" max="70" value="50">
+            <div class="scale-labels">
+              <span>30°F (High Tolerance)</span>
+              <span>50°F (Average)</span>
+              <span>70°F (Low Tolerance)</span>
+            </div>
+          </div>
+
+          <!-- Heat Sensitivity -->
+          <div class="survey-group">
+            <label for="heatScale">When do you start feeling HOT?</label>
+            <input type="range" id="heatScale" min="65" max="95" value="80">
+            <div class="scale-labels">
+              <span>65°F (Low Tolerance)</span>
+              <span>80°F (Average)</span>
+              <span>95°F (High Tolerance)</span>
+            </div>
+          </div>
+
+          <!-- Style Preference Tier -->
+          <div class="survey-group">
+            <label>Default Outfit Style:</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label"><input type="radio" name="preferredStyle" value="casual" checked> Casual</label>
+              <label class="checkbox-label"><input type="radio" name="preferredStyle" value="formal"> Formal</label>
+              <label class="checkbox-label"><input type="radio" name="preferredStyle" value="athletic"> Athletic</label>
+            </div>
+          </div>
+
+          <!-- Hot Weather Items -->
+          <div class="survey-group">
+            <label>Favorite Warm Weather Essentials:</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="T-shirt" checked> T-Shirts</label>
+              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Tank top"> Tank Tops</label>
+              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Shorts" checked> Shorts</label>
+              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Linen Shirt"> Linen Shirts</label>
+            </div>
+          </div>
+
+          <!-- Cold Weather Layers -->
+          <div class="survey-group">
+            <label>Favorite Cold Weather Layers:</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Hoodie" checked> Hoodies</label>
+              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Wool Coat" checked> Wool Coats</label>
+              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Puffer Jacket"> Puffer Jackets</label>
+              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Thermal Base Layer"> Thermals</label>
+            </div>
+          </div>
+
+          <button type="button" id="goToStep2Btn" class="btn-primary">Next: Weather Setup →</button>
+        </form>
+      </div>
+
+      <!-- STEP 2: WEATHER CHANNEL / LOCATION SETUP -->
+      <div id="step2Content" class="hidden">
+        <h2>Step 2: Check Today's Weather</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Enter your location to pull real-time condition data from the weather channel.</p>
+
         <div class="survey-group">
-          <label for="coldScale">When do you start feeling COLD?</label>
-          <input type="range" id="coldScale" min="30" max="70" value="50">
-          <div class="scale-labels">
-            <span>30°F (High Tolerance)</span>
-            <span>50°F (Average)</span>
-            <span>70°F (Low Tolerance)</span>
+          <label for="initialCityInput">Enter Your City or Zip Code:</label>
+          <div class="search-bar">
+            <input type="text" id="initialCityInput" placeholder="e.g., New York, London, Tokyo..." value="New York">
+            <button type="button" id="detectLocationBtn" class="unit-toggle-btn">📍 Auto-Detect</button>
           </div>
         </div>
 
-        <!-- Heat Sensitivity -->
         <div class="survey-group">
-          <label for="heatScale">When do you start feeling HOT?</label>
-          <input type="range" id="heatScale" min="65" max="95" value="80">
-          <div class="scale-labels">
-            <span>65°F (Low Tolerance)</span>
-            <span>80°F (Average)</span>
-            <span>95°F (High Tolerance)</span>
-          </div>
+          <label>Forecast Provider / Source:</label>
+          <select id="weatherSource" class="custom-select">
+            <option value="openweathermap" selected>OpenWeatherMap Channel</option>
+            <option value="weatherapi">WeatherAPI / Weather Channel Stream</option>
+          </select>
         </div>
 
-        <!-- Hot Weather Style -->
-        <div class="survey-group">
-          <label>Preferred Hot Weather Style:</label>
-          <div class="checkbox-grid">
-            <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="T-shirt" checked> T-Shirts</label>
-            <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Tank top"> Tank Tops</label>
-            <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Shorts" checked> Shorts</label>
-            <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Linen Shirt"> Linen Shirts</label>
-          </div>
+        <div class="wizard-actions">
+          <button type="button" id="backToStep1Btn" class="btn-secondary">← Back to Preferences</button>
+          <button type="button" id="finishOnboardingBtn" class="btn-primary">Fetch Forecast & See Outfits</button>
         </div>
+      </div>
 
-        <!-- Cold Weather Style -->
-        <div class="survey-group">
-          <label>Preferred Cold Weather Layers:</label>
-          <div class="checkbox-grid">
-            <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Hoodie" checked> Hoodies</label>
-            <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Wool Coat" checked> Wool Coats</label>
-            <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Puffer Jacket"> Puffer Jackets</label>
-            <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Thermal Base Layer"> Thermals</label>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary">Save Preferences & Proceed</button>
-      </form>
     </section>
 
     <!-- SECTION 2: DAILY ROUTINE DASHBOARD -->
     <main id="dashboardSection" class="hidden">
-      <!-- Location Search -->
+      
+      <!-- Quick Location & Weather Refresher -->
       <div class="search-bar">
-        <input type="text" id="cityInput" placeholder="Enter city (e.g., New York, London, Tokyo)..." value="New York">
-        <button id="searchBtn" class="btn-primary">Search</button>
+        <input type="text" id="cityInput" placeholder="Change city..." value="New York">
+        <button id="searchBtn" class="btn-primary">Update Weather</button>
       </div>
 
       <div class="dashboard-grid">
         <!-- Weather Summary Card -->
         <div class="card weather-info">
-          <h3 id="locationName">New York, US</h3>
+          <div class="weather-header-row">
+            <h3 id="locationName">New York, US</h3>
+            <span class="weather-badge" id="weatherConditionBadge">Sunny</span>
+          </div>
           <div class="temp-display" id="tempDisplay">68°F</div>
           <p id="conditionText" style="font-weight: 600; text-transform: capitalize;">Partly Cloudy</p>
-          <hr style="border: 0; border-top: 1px solid var(--border);">
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 12px 0;">
           <p style="font-size: 0.9rem; color: var(--text-muted);">
             Humidity: <span id="humidityVal">55%</span> | Wind: <span id="windVal">10 mph</span>
           </p>
-          <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: auto;">⚙️ Edit Temperature Preferences</button>
+          <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Profile & Location</button>
         </div>
 
         <!-- Outfit Suggestions Card -->
         <div class="card">
-          <h3>Suggested Outfit</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Based on today's weather & your profile</p>
+          <h3>Today's Recommended Outfit</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Matched to current forecast & your personal thermal thresholds</p>
 
           <div class="outfit-category">
             <h4>Tops & Outerwear</h4>
@@ -358,7 +168,7 @@
           </div>
 
           <div class="outfit-category">
-            <h4>Footwear & Gear</h4>
+            <h4>Footwear & Weather Gear</h4>
             <div class="tags" id="gearRecommendations">
               <span class="tag">Sneakers</span>
               <span class="tag">Sunglasses</span>
@@ -371,21 +181,3 @@
       <section class="card chat-container">
         <h3>Outfit Advisor Chat 💬</h3>
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">Ask if a specific item or style works for today's weather!</p>
-        
-        <div class="chat-messages" id="chatMessages">
-          <div class="chat-bubble bot">
-            Hello! Ask me anything about what to wear today (e.g., "Can I wear shorts today?", "Is a leather jacket too warm?").
-          </div>
-        </div>
-
-        <form id="chatForm" class="chat-input-form">
-          <input type="text" id="chatInput" placeholder="Ask about an outfit item..." required>
-          <button type="submit" class="btn-primary" style="width: auto;">Send</button>
-        </form>
-      </section>
-    </main>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
