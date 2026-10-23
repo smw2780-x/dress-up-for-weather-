@@ -56,13 +56,19 @@
             </div>
           </div>
 
-          <!-- Style Preference Tier -->
+          <!-- Style Preference Tier (Multi-select) -->
           <div class="survey-group">
-            <label>Default Outfit Style:</label>
+            <label>Preferred Outfit Styles (Select all that apply):</label>
             <div class="checkbox-grid">
-              <label class="checkbox-label"><input type="radio" name="preferredStyle" value="casual" checked> Casual</label>
-              <label class="checkbox-label"><input type="radio" name="preferredStyle" value="formal"> Formal</label>
-              <label class="checkbox-label"><input type="radio" name="preferredStyle" value="athletic"> Athletic</label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="casual" checked> Casual
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="formal"> Formal
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="athletic"> Athletic
+              </label>
             </div>
           </div>
 
@@ -181,3 +187,21 @@
       <section class="card chat-container">
         <h3>Outfit Advisor Chat 💬</h3>
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">Ask if a specific item or style works for today's weather!</p>
+        
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-bubble bot">
+            Hello! Ask me anything about what to wear today (e.g., "Can I wear shorts today?", "Is a leather jacket too warm?").
+          </div>
+        </div>
+
+        <form id="chatForm" class="chat-input-form">
+          <input type="text" id="chatInput" placeholder="Ask about an outfit item..." required>
+          <button type="submit" class="btn-primary" style="width: auto;">Send</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
