@@ -1,30 +1,31 @@
 /* ==========================================
-   1. GLOBAL VARIABLES & COZY THEME
+   1. GLOBAL VARIABLES & WARM DARK MODE THEME
    ========================================== */
 :root {
-  /* Warm & Comfort Color Palette */
-  --primary: #c85a32;             /* Terracotta - Warm & Inviting */
-  --primary-hover: #b04924;       /* Deep Clay */
-  --primary-light: #fdf3ef;       /* Warm Soft Blush */
-  --secondary: #d97706;           /* Warm Amber / Harvest Gold */
-  --accent-cool: #3b7a57;         /* Sage Green (Reliable / Balanced) */
+  /* Warm Dark Mode Palette */
+  --primary: #e0683b;             /* Glowing Terracotta */
+  --primary-hover: #f0784b;       /* Brighter Terracotta Hover */
+  --primary-light: rgba(224, 104, 59, 0.18); /* Terracotta Glow Accent */
+  --secondary: #f59e0b;           /* Warm Amber Gold */
+  --accent-cool: #4ade80;         /* Soft Emerald / Sage Green */
   
   /* Background & Card Surfaces */
-  --bg-gradient: linear-gradient(135deg, #f7f3ee 0%, #ece5dd 100%); /* Soft Oatmeal / Linen */
-  --card-bg: rgba(255, 252, 248, 0.94); /* Warm Cream Glass */
+  --bg-gradient: linear-gradient(135deg, #141110 0%, #1e1917 100%); /* Deep Espresso Charcoal */
+  --card-bg: rgba(36, 31, 29, 0.85); /* Warm Dark Cream Glass */
+  --card-border: rgba(230, 215, 200, 0.1); /* Subtle Warm Glass Border */
   
   /* Typography */
-  --text-main: #2b2523;           /* Deep Warm Charcoal */
-  --text-muted: #786c66;          /* Muted Warm Taupe */
-  --border-color: #e6ded6;        /* Subtle Warm Border */
+  --text-main: #f5efe6;           /* Soft Warm Cream */
+  --text-muted: #a3978c;          /* Warm Slate Taupe */
+  --border-color: #38302c;        /* Dark Warm Border */
   
   /* Elevation & Rounding */
   --radius-lg: 20px;
   --radius-md: 12px;
   --radius-sm: 8px;
-  --shadow-sm: 0 2px 6px rgba(60, 40, 30, 0.04);
-  --shadow-md: 0 6px 18px rgba(60, 40, 30, 0.08);
-  --shadow-lg: 0 14px 32px rgba(60, 40, 30, 0.12);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
   --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -84,7 +85,7 @@ header {
   background: var(--card-bg);
   padding: 12px 20px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--card-border);
   box-shadow: var(--shadow-sm);
 }
 
@@ -128,19 +129,20 @@ header {
   background: var(--border-color);
 }
 
-/* Cards & Warm Glassmorphism */
+/* Cards & Warm Dark Glassmorphism */
 .card {
   background: var(--card-bg);
   border-radius: var(--radius-lg);
   padding: 32px;
   box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(12px);
   transition: var(--transition);
 }
 
 .card:hover {
   box-shadow: var(--shadow-lg);
+  border-color: rgba(224, 104, 59, 0.3);
 }
 
 .hidden {
@@ -164,13 +166,13 @@ header {
   justify-content: center;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(200, 90, 50, 0.25);
+  box-shadow: 0 4px 16px rgba(224, 104, 59, 0.35);
 }
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(200, 90, 50, 0.35);
+  box-shadow: 0 6px 20px rgba(224, 104, 59, 0.45);
 }
 
 .btn-primary:active {
@@ -189,13 +191,13 @@ header {
 }
 
 .btn-secondary:hover {
-  background: #ffffff;
+  background: var(--card-bg);
   color: var(--text-main);
   border-color: var(--text-muted);
 }
 
 .unit-toggle-btn {
-  background: #ffffff;
+  background: #2d2623;
   border: 1px solid var(--border-color);
   padding: 8px 16px;
   border-radius: 20px;
@@ -233,7 +235,7 @@ header {
   color: var(--text-main);
 }
 
-/* Custom Warm Range Sliders */
+/* Custom Warm Dark Range Sliders */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -253,7 +255,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   background: var(--primary);
   cursor: pointer;
-  box-shadow: 0 0 0 4px var(--primary-light);
+  box-shadow: 0 0 10px rgba(224, 104, 59, 0.5);
   transition: var(--transition);
 }
 
@@ -284,7 +286,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   font-size: 0.9rem;
-  background: #ffffff;
+  background: #2a2320;
+  color: var(--text-main);
   cursor: pointer;
   transition: var(--transition);
   user-select: none;
@@ -307,7 +310,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   padding: 12px 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  background: #ffffff;
+  background: #2a2320;
   font-size: 0.95rem;
   color: var(--text-main);
   outline: none;
@@ -333,10 +336,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
   padding: 12px 18px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  background: #ffffff;
+  background: #2a2320;
+  color: var(--text-main);
   font-size: 0.95rem;
   outline: none;
   transition: var(--transition);
+}
+
+.search-bar input::placeholder {
+  color: var(--text-muted);
 }
 
 .search-bar input:focus {
@@ -358,12 +366,16 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .weather-badge {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--secondary);
+  border: 1px solid rgba(245, 158, 11, 0.3);
   font-size: 0.8rem;
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .temp-display {
@@ -394,8 +406,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .tag {
   background: var(--primary-light);
-  color: var(--primary);
-  border: 1px solid rgba(200, 90, 50, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(224, 104, 59, 0.3);
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 0.85rem;
@@ -439,8 +451,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .chat-bubble.bot {
-  background: #f1ebe4;
+  background: #2a2320;
   color: var(--text-main);
+  border: 1px solid var(--border-color);
   align-self: flex-start;
   border-bottom-left-radius: 4px;
 }
@@ -462,10 +475,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
   padding: 12px 16px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  background: #ffffff;
+  background: #2a2320;
+  color: var(--text-main);
   font-size: 0.9rem;
   outline: none;
   transition: var(--transition);
+}
+
+.chat-input-form input::placeholder {
+  color: var(--text-muted);
 }
 
 .chat-input-form input:focus {
