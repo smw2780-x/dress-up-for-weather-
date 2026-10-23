@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WeatherWear - Smart Clothing Recommendations</title>
+  <title>WeatherWear - Smart Outfit Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,7 +21,7 @@
       </div>
       <div class="step-line"></div>
       <div class="step-badge" id="badgeStep2">
-        <span class="step-number">2</span> Today's Weather
+        <span class="step-number">2</span> Weather Setup
       </div>
     </div>
 
@@ -30,13 +30,16 @@
       
       <!-- STEP 1: USER PREFERENCES -->
       <div id="step1Content">
-        <h2>Step 1: Customize Your Preferences</h2>
-        <p style="color: var(--text-muted); margin-bottom: 20px;">Help us understand your temperature tolerance and style choices.</p>
+        <h2>Step 1: Customize Your Thermal Profile</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Adjust exact temperature points where weather feels too cold or too hot for you.</p>
 
         <form id="preferencesForm">
           <!-- Cold Sensitivity -->
           <div class="survey-group">
-            <label for="coldScale">When do you start feeling COLD?</label>
+            <div class="label-with-value">
+              <label for="coldScale">When do you start feeling COLD?</label>
+              <span class="temp-readout" id="coldReadout">50°F</span>
+            </div>
             <input type="range" id="coldScale" min="30" max="70" value="50">
             <div class="scale-labels">
               <span>30°F (High Tolerance)</span>
@@ -47,7 +50,10 @@
 
           <!-- Heat Sensitivity -->
           <div class="survey-group">
-            <label for="heatScale">When do you start feeling HOT?</label>
+            <div class="label-with-value">
+              <label for="heatScale">When do you start feeling HOT?</label>
+              <span class="temp-readout" id="heatReadout">80°F</span>
+            </div>
             <input type="range" id="heatScale" min="65" max="95" value="80">
             <div class="scale-labels">
               <span>65°F (Low Tolerance)</span>
@@ -56,7 +62,7 @@
             </div>
           </div>
 
-          <!-- Style Preference Tier (Multi-select) -->
+          <!-- Preferred Styles -->
           <div class="survey-group">
             <label>Preferred Outfit Styles (Select all that apply):</label>
             <div class="checkbox-grid">
@@ -72,51 +78,20 @@
             </div>
           </div>
 
-          <!-- Hot Weather Items -->
-          <div class="survey-group">
-            <label>Favorite Warm Weather Essentials:</label>
-            <div class="checkbox-grid">
-              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="T-shirt" checked> T-Shirts</label>
-              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Tank top"> Tank Tops</label>
-              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Shorts" checked> Shorts</label>
-              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Linen Shirt"> Linen Shirts</label>
-            </div>
-          </div>
-
-          <!-- Cold Weather Layers -->
-          <div class="survey-group">
-            <label>Favorite Cold Weather Layers:</label>
-            <div class="checkbox-grid">
-              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Hoodie" checked> Hoodies</label>
-              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Wool Coat" checked> Wool Coats</label>
-              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Puffer Jacket"> Puffer Jackets</label>
-              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Thermal Base Layer"> Thermals</label>
-            </div>
-          </div>
-
           <button type="button" id="goToStep2Btn" class="btn-primary">Next: Weather Setup →</button>
         </form>
       </div>
 
-      <!-- STEP 2: WEATHER CHANNEL / LOCATION SETUP -->
+      <!-- STEP 2: WEATHER SETUP -->
       <div id="step2Content" class="hidden">
         <h2>Step 2: Check Today's Weather</h2>
-        <p style="color: var(--text-muted); margin-bottom: 20px;">Enter your location to pull real-time condition data from the weather channel.</p>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Enter your location to pull real-time condition data from OpenWeather.</p>
 
         <div class="survey-group">
           <label for="initialCityInput">Enter Your City or Zip Code:</label>
           <div class="search-bar">
             <input type="text" id="initialCityInput" placeholder="e.g., New York, London, Tokyo..." value="New York">
-            <button type="button" id="detectLocationBtn" class="unit-toggle-btn">📍 Auto-Detect</button>
           </div>
-        </div>
-
-        <div class="survey-group">
-          <label>Forecast Provider / Source:</label>
-          <select id="weatherSource" class="custom-select">
-            <option value="openweathermap" selected>OpenWeatherMap Channel</option>
-            <option value="weatherapi">WeatherAPI / Weather Channel Stream</option>
-          </select>
         </div>
 
         <div class="wizard-actions">
@@ -127,10 +102,10 @@
 
     </section>
 
-    <!-- SECTION 2: DAILY ROUTINE DASHBOARD -->
+    <!-- MAIN DASHBOARD -->
     <main id="dashboardSection" class="hidden">
       
-      <!-- Quick Location & Weather Refresher -->
+      <!-- Location Search Bar -->
       <div class="search-bar">
         <input type="text" id="cityInput" placeholder="Change city..." value="New York">
         <button id="searchBtn" class="btn-primary">Update Weather</button>
@@ -149,48 +124,55 @@
           <p style="font-size: 0.9rem; color: var(--text-muted);">
             Humidity: <span id="humidityVal">55%</span> | Wind: <span id="windVal">10 mph</span>
           </p>
-          <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Profile & Location</button>
+          <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Thermal Thresholds</button>
         </div>
 
-        <!-- Outfit Suggestions Card -->
-        <div class="card">
-          <h3>Today's Recommended Outfit</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Matched to current forecast & your personal thermal thresholds</p>
-
-          <div class="outfit-category">
-            <h4>Tops & Outerwear</h4>
-            <div class="tags" id="topRecommendations">
-              <span class="tag">Light Sweater</span>
-              <span class="tag">Denim Jacket</span>
+        <!-- Outfit Suggestions & Avatar Card -->
+        <div class="card outfit-card-wrapper">
+          <div class="avatar-and-outfit-container">
+            <!-- Dynamic Avatar Box -->
+            <div class="avatar-box">
+              <h4>Outfit Preview</h4>
+              <div class="bitmoji-avatar" id="avatarDisplay">
+                <div class="avatar-part hat" id="avatarHat">🧢</div>
+                <div class="avatar-part head">😶</div>
+                <div class="avatar-part torso" id="avatarTorso">👕</div>
+                <div class="avatar-part legs" id="avatarLegs">👖</div>
+                <div class="avatar-part feet" id="avatarFeet">👟</div>
+              </div>
             </div>
-          </div>
 
-          <div class="outfit-category">
-            <h4>Bottoms</h4>
-            <div class="tags" id="bottomRecommendations">
-              <span class="tag">Jeans</span>
-              <span class="tag">Chinos</span>
-            </div>
-          </div>
+            <!-- Tags Section -->
+            <div class="outfit-details">
+              <h3>Today's Recommended Gear</h3>
 
-          <div class="outfit-category">
-            <h4>Footwear & Weather Gear</h4>
-            <div class="tags" id="gearRecommendations">
-              <span class="tag">Sneakers</span>
-              <span class="tag">Sunglasses</span>
+              <div class="outfit-category">
+                <h4>Tops & Outerwear</h4>
+                <div class="tags" id="topRecommendations"></div>
+              </div>
+
+              <div class="outfit-category">
+                <h4>Bottoms</h4>
+                <div class="tags" id="bottomRecommendations"></div>
+              </div>
+
+              <div class="outfit-category">
+                <h4>Footwear & Weather Gear</h4>
+                <div class="tags" id="gearRecommendations"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SECTION 3: CLOTHING AI CHAT BOT -->
+      <!-- CHAT ASSISTANT -->
       <section class="card chat-container">
         <h3>Outfit Advisor Chat 💬</h3>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">Ask if a specific item or style works for today's weather!</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">Ask if a specific item works for today's weather!</p>
         
         <div class="chat-messages" id="chatMessages">
           <div class="chat-bubble bot">
-            Hello! Ask me anything about what to wear today (e.g., "Can I wear shorts today?", "Is a leather jacket too warm?").
+            Hello! Ask me anything about what to wear today (e.g., "Can I wear shorts today?", "Is a puffer jacket too hot?").
           </div>
         </div>
 
