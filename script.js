@@ -105,7 +105,7 @@ function setupEventListeners() {
   document.getElementById("backToStep1Btn")?.addEventListener("click", () => switchStep(1));
 
   document.getElementById("finishOnboardingBtn")?.addEventListener("click", async () => {
-    const cityInput = document.getElementById("initialCityInput").value.trim();
+    const cityInput = document.getElementById("initialCityInput")?.value.trim();
     if (cityInput) state.weather.city = cityInput;
     await fetchOpenWeatherData(state.weather.city);
     showDashboard();
@@ -140,18 +140,26 @@ function setupEventListeners() {
 }
 
 function updateSliderReadouts() {
-  const coldValF = parseInt(document.getElementById("coldScale").value, 10);
-  const heatValF = parseInt(document.getElementById("heatScale").value, 10);
-  const genderVal = parseInt(document.getElementById("genderScale").value, 10);
+  const coldScale = document.getElementById("coldScale");
+  const heatScale = document.getElementById("heatScale");
+  const genderScale = document.getElementById("genderScale");
+
+  const coldValF = coldScale ? parseInt(coldScale.value, 10) : 50;
+  const heatValF = heatScale ? parseInt(heatScale.value, 10) : 80;
+  const genderVal = genderScale ? parseInt(genderScale.value, 10) : 5;
+
+  const coldReadout = document.getElementById("coldReadout");
+  const heatReadout = document.getElementById("heatReadout");
+  const genderReadout = document.getElementById("genderReadout");
 
   if (state.unit === "F") {
-    document.getElementById("coldReadout").innerText = `${coldValF}°F`;
-    document.getElementById("heatReadout").innerText = `${heatValF}°F`;
+    if (coldReadout) coldReadout.innerText = `${coldValF}°F`;
+    if (heatReadout) heatReadout.innerText = `${heatValF}°F`;
   } else {
     const coldValC = Math.round(((coldValF - 32) * 5) / 9);
     const heatValC = Math.round(((heatValF - 32) * 5) / 9);
-    document.getElementById("coldReadout").innerText = `${coldValC}°C`;
-    document.getElementById("heatReadout").innerText = `${heatValC}°C`;
+    if (coldReadout) coldReadout.innerText = `${coldValC}°C`;
+    if (heatReadout) heatReadout.innerText = `${heatValC}°C`;
   }
 
   // 1 to 10 Gender Expression Readout
@@ -162,15 +170,18 @@ function updateSliderReadouts() {
   else if (genderVal <= 8) label = `${genderVal} (Slightly Feminine)`;
   else label = `${genderVal} (Feminine)`;
 
-  document.getElementById("genderReadout").innerText = label;
+  if (genderReadout) genderReadout.innerText = label;
 }
 
 function saveStep1Preferences() {
-  state.preferences.coldThreshold = parseInt(document.getElementById("coldScale").value, 10);
-  state.preferences.heatThreshold = parseInt(document.getElementById("heatScale").value, 10);
-  state.preferences.genderExpression = parseInt(document.getElementById("genderScale").value, 10);
+  const coldScale = document.getElementById("coldScale");
+  const heatScale = document.getElementById("heatScale");
+  const genderScale = document.getElementById("genderScale");
 
-  // Checks both possible checkbox field names to avoid errors
+  if (coldScale) state.preferences.coldThreshold = parseInt(coldScale.value, 10);
+  if (heatScale) state.preferences.heatThreshold = parseInt(heatScale.value, 10);
+  if (genderScale) state.preferences.genderExpression = parseInt(genderScale.value, 10);
+
   const selectedStyles = Array.from(
     document.querySelectorAll('input[name="preferredStyle"]:checked, input[name="stylePref"]:checked')
   ).map((el) => el.value);
@@ -186,22 +197,22 @@ function switchStep(stepNumber) {
   const badgeStep2 = document.getElementById("badgeStep2");
 
   if (stepNumber === 1) {
-    step1Content.classList.remove("hidden");
-    step2Content.classList.add("hidden");
-    badgeStep1.classList.add("active");
-    badgeStep2.classList.remove("active");
+    step1Content?.classList.remove("hidden");
+    step2Content?.classList.add("hidden");
+    badgeStep1?.classList.add("active");
+    badgeStep2?.classList.remove("active");
   } else {
-    step1Content.classList.add("hidden");
-    step2Content.classList.remove("hidden");
-    badgeStep1.classList.remove("active");
-    badgeStep2.classList.add("active");
+    step1Content?.classList.add("hidden");
+    step2Content?.classList.remove("hidden");
+    badgeStep1?.classList.remove("active");
+    badgeStep2?.classList.add("active");
   }
 }
 
 function showDashboard() {
-  document.getElementById("onboardingSection").classList.add("hidden");
-  document.getElementById("stepIndicator").classList.add("hidden");
-  document.getElementById("dashboardSection").classList.remove("hidden");
+  document.getElementById("onboardingSection")?.classList.add("hidden");
+  document.getElementById("stepIndicator")?.classList.add("hidden");
+  document.getElementById("dashboardSection")?.classList.remove("hidden");
   renderDashboard();
 }
 
@@ -245,16 +256,23 @@ function getTemperatureTier(tempF) {
 function renderDashboard() {
   const tempVal = state.unit === "F" ? `${state.weather.tempF}°F` : `${state.weather.tempC}°C`;
   
-  document.getElementById("locationName").innerText = state.weather.city;
-  document.getElementById("tempDisplay").innerText = tempVal;
-  document.getElementById("conditionText").innerText = state.weather.condition;
+  const locEl = document.getElementById("locationName");
+  const tempEl = document.getElementById("tempDisplay");
+  const condEl = document.getElementById("conditionText");
+  const humEl = document.getElementById("humidityVal");
+  const windEl = document.getElementById("windVal");
+
+  if (locEl) locEl.innerText = state.weather.city;
+  if (tempEl) tempEl.innerText = tempVal;
+  if (condEl) condEl.innerText = state.weather.condition;
+  if (humEl) humEl.innerText = `${state.weather.humidity}%`;
+  if (windEl) windEl.innerText = state.weather.windSpeed;
   
   const badge = document.getElementById("weatherConditionBadge");
-  const iconUrl = `https://openweathermap.org/img/wn/${state.weather.iconCode}.png`;
-  badge.innerHTML = `<img src="${iconUrl}" alt="icon" style="vertical-align: middle; width: 22px;"> ${state.weather.condition}`;
-
-  document.getElementById("humidityVal").innerText = `${state.weather.humidity}%`;
-  document.getElementById("windVal").innerText = state.weather.windSpeed;
+  if (badge) {
+    const iconUrl = `https://openweathermap.org/img/wn/${state.weather.iconCode}.png`;
+    badge.innerHTML = `<img src="${iconUrl}" alt="icon" style="vertical-align: middle; width: 22px;"> ${state.weather.condition}`;
+  }
 
   const currentTier = getTemperatureTier(state.weather.tempF);
   const expressionVal = state.preferences.genderExpression;
@@ -291,6 +309,7 @@ function renderAvatar(tier, expressionKey) {
 
 function renderTags(elementId, itemsArray) {
   const container = document.getElementById(elementId);
+  if (!container) return;
   container.innerHTML = "";
   itemsArray.forEach((item) => {
     const span = document.createElement("span");
@@ -307,6 +326,7 @@ function updateUnitToggleDisplay() {
 
 function handleChatSubmit() {
   const chatInput = document.getElementById("chatInput");
+  if (!chatInput) return;
   const query = chatInput.value.trim();
   if (!query) return;
 
@@ -321,6 +341,7 @@ function handleChatSubmit() {
 
 function appendChatMessage(text, sender) {
   const chatMessages = document.getElementById("chatMessages");
+  if (!chatMessages) return;
   const bubble = document.createElement("div");
   bubble.className = `chat-bubble ${sender}`;
   bubble.innerText = text;
