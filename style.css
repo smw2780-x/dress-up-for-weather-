@@ -1,19 +1,19 @@
 /* ==========================================
-   1. GLOBAL VARIABLES & WARM DARK THEME
+   1. GLOBAL VARIABLES & WARM DARK MODE THEME
    ========================================== */
 :root {
   --primary-color: #e0683b;             /* Glowing Terracotta */
   --primary-hover: #f0784b;       
   --primary-light: rgba(224, 104, 59, 0.18);
-  --secondary: #f59e0b;           /* Warm Amber */
+  --secondary: #f59e0b;           /* Warm Amber Gold */
   
-  --bg-dark: #0f0c0b;             /* Deep Dark Background */
+  --bg-dark: #0f0c0b;
   --bg-gradient: linear-gradient(135deg, #141110 0%, #1e1917 100%);
   --card-bg: rgba(36, 31, 29, 0.85);
   --border-color: rgba(255, 255, 255, 0.15);
   
   --text-main: #f3f4f6;           /* Soft Warm Cream */
-  --text-muted: #9ca3af;          /* Slate Taupe */
+  --text-muted: #9ca3af;          /* Warm Slate Taupe */
   
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -24,14 +24,11 @@
   --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ==========================================
-   2. BASE RESET & CONTAINER STRUCTURE
-   ========================================== */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -44,7 +41,6 @@ body {
   justify-content: center;
   align-items: flex-start;
   padding: 32px 16px;
-  line-height: 1.5;
 }
 
 .app-container {
@@ -70,24 +66,21 @@ header {
   letter-spacing: -0.5px;
 }
 
-/* ==========================================
-   3. CARDS & STEP INDICATORS
-   ========================================== */
 .card {
   background: var(--card-bg);
   border-radius: var(--radius-lg);
   padding: 28px;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   margin-bottom: 20px;
-  transition: var(--transition);
 }
 
 .hidden {
   display: none !important;
 }
 
+/* Step Indicators */
 .step-indicator-container {
   display: flex;
   align-items: center;
@@ -138,9 +131,7 @@ header {
   background: var(--border-color);
 }
 
-/* ==========================================
-   4. BUTTONS, INPUTS & RANGE SLIDERS
-   ========================================== */
+/* Buttons & Inputs */
 .btn-primary {
   background-color: var(--primary-color);
   color: #ffffff;
@@ -224,18 +215,6 @@ input[type="range"] {
   accent-color: var(--primary-color);
 }
 
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(224, 104, 59, 0.5);
-  transition: var(--transition);
-}
-
 .scale-labels {
   display: flex;
   justify-content: space-between;
@@ -268,9 +247,7 @@ input[type="range"]::-webkit-slider-thumb {
   background: var(--primary-light);
 }
 
-/* ==========================================
-   5. DASHBOARD & WEATHER SUMMARY
-   ========================================== */
+/* Search Bar & Dashboard Grid */
 .search-bar {
   display: flex;
   gap: 10px;
@@ -319,14 +296,7 @@ input[type="range"]::-webkit-slider-thumb {
   margin: 10px 0;
 }
 
-/* ==========================================
-   6. REALISTIC SVG MODEL STYLING
-   ========================================== */
-.outfit-card-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
+/* REALISTIC SVG MODEL STYLING */
 .avatar-and-outfit-container {
   display: flex;
   gap: 20px;
@@ -334,26 +304,24 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .avatar-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(15, 12, 11, 0.5);
   padding: 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
   min-width: 140px;
-  background: rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .avatar-box h4 {
-  margin-bottom: 12px;
   font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
   color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
 .model-avatar-container {
-  box-sizing: border-box;
   width: 100px;
   height: 200px;
   display: flex;
@@ -375,20 +343,11 @@ input[type="range"]::-webkit-slider-thumb {
 .human-silhouette path,
 .human-silhouette rect,
 .human-silhouette circle {
-  transition: fill 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
+  transition: fill 0.35s ease, d 0.35s ease;
 }
 
 .outfit-details {
   flex: 1;
-}
-
-.outfit-details h3 {
-  margin-bottom: 8px;
-  color: var(--text-main);
-}
-
-.outfit-details p {
-  color: var(--text-muted);
 }
 
 .outfit-category {
@@ -418,9 +377,7 @@ input[type="range"]::-webkit-slider-thumb {
   font-weight: 600;
 }
 
-/* ==========================================
-   7. CHAT ASSISTANT
-   ========================================== */
+/* Chat Assistant */
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -470,7 +427,6 @@ input[type="range"]::-webkit-slider-thumb {
   outline: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
