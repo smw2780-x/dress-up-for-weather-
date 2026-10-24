@@ -2,8 +2,7 @@
  * WeatherWear - Personal Weather Dashboard & Style Advisor
  */
 
-// Replace with your valid OpenWeatherMap API key (e.g. "a1b2c3d4e5...")
-const OPENWEATHER_API_KEY = "YOUR_OPENWEATHER_API_KEY";
+const OPENWEATHER_API_KEY = "YOUR_OPENWEATHER_API_KEY"; // Replace with your API key
 
 const state = {
   unit: "F",
@@ -11,20 +10,21 @@ const state = {
   preferences: {
     coldThreshold: 50,
     heatThreshold: 80,
-    preferredStyles: ["casual"],
-    genderExpression: 5,
-    hotStyle: ["T-shirt", "Shorts"],
-    coldStyle: ["Hoodie", "Wool Coat"],
+    preferredStyles: ["Casual", "Formal / Business"],
+    topsStyle: ["T-shirt", "Button-up / Polo"],
+    bottomsStyle: ["Jeans", "Chinos / Trousers"],
+    layersStyle: ["Hoodie / Sweatshirt", "Light Cardigan / Sweater"],
+    shoesStyle: ["Sneakers", "Loafers / Dress Shoes"],
+    accessoriesStyle: ["Sunglasses", "Cap / Beanie"]
   },
   weather: {
     city: "New York",
     tempF: 68,
     tempC: 20,
     condition: "Partly Cloudy",
-    iconCode: "02d",
     humidity: 55,
-    windSpeed: "10 mph",
-  },
+    windSpeed: "10 mph"
+  }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -77,26 +77,20 @@ function setupEventListeners() {
 function saveStep1Preferences() {
   const coldVal = document.getElementById("coldScale");
   const heatVal = document.getElementById("heatScale");
-  const genderVal = document.getElementById("genderStyleScale");
 
   if (coldVal) state.preferences.coldThreshold = parseInt(coldVal.value, 10);
   if (heatVal) state.preferences.heatThreshold = parseInt(heatVal.value, 10);
-  if (genderVal) state.preferences.genderExpression = parseInt(genderVal.value, 10);
 
-  const selectedStyles = Array.from(
-    document.querySelectorAll('input[name="preferredStyle"]:checked')
-  ).map((el) => el.value);
-  if (selectedStyles.length) state.preferences.preferredStyles = selectedStyles;
+  // Save selected overall styles
+  const checkedStyles = Array.from(document.querySelectorAll('input[name="preferredStyle"]:checked')).map(el => el.value);
+  if (checkedStyles.length) state.preferences.preferredStyles = checkedStyles;
 
-  const hotChecked = Array.from(
-    document.querySelectorAll('input[name="hotStyle"]:checked')
-  ).map((el) => el.value);
-  if (hotChecked.length) state.preferences.hotStyle = hotChecked;
-
-  const coldChecked = Array.from(
-    document.querySelectorAll('input[name="coldStyle"]:checked')
-  ).map((el) => el.value);
-  if (coldChecked.length) state.preferences.coldStyle = coldChecked;
+  // Save detailed item selections
+  state.preferences.topsStyle = Array.from(document.querySelectorAll('input[name="topsStyle"]:checked')).map(el => el.value);
+  state.preferences.bottomsStyle = Array.from(document.querySelectorAll('input[name="bottomsStyle"]:checked')).map(el => el.value);
+  state.preferences.layersStyle = Array.from(document.querySelectorAll('input[name="layersStyle"]:checked')).map(el => el.value);
+  state.preferences.shoesStyle = Array.from(document.querySelectorAll('input[name="shoesStyle"]:checked')).map(el => el.value);
+  state.preferences.accessoriesStyle = Array.from(document.querySelectorAll('input[name="accessoriesStyle"]:checked')).map(el => el.value);
 }
 
 function switchStep(stepNumber) {
@@ -128,9 +122,7 @@ function showDashboard() {
 
 async function fetchWeatherData(cityName) {
   try {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
-      cityName
-    )}&units=imperial&appid=${OPENWEATHER_API_KEY}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&units=imperial&appid=${OPENWEATHER_API_KEY}`;
     const response = await fetch(url);
     if (!response.ok) throw new Error("City not found");
     const data = await response.json();
@@ -139,218 +131,88 @@ async function fetchWeatherData(cityName) {
     state.weather.tempF = Math.round(data.main.temp);
     state.weather.tempC = Math.round(((data.main.temp - 32) * 5) / 9);
     state.weather.condition = data.weather[0].description;
-    state.weather.iconCode = data.weather[0].icon;
     state.weather.humidity = data.main.humidity;
     state.weather.windSpeed = `${Math.round(data.wind.speed)} mph`;
   } catch (error) {
+    // Fallback Mock Data
     const mockTemp = Math.floor(Math.sin(cityName.length) * 25 + 65);
     state.weather.city = cityName;
     state.weather.tempF = mockTemp;
     state.weather.tempC = Math.round(((mockTemp - 32) * 5) / 9);
     state.weather.condition = mockTemp > 75 ? "clear sky" : "partly cloudy";
-    state.weather.iconCode = mockTemp > 75 ? "01d" : "02d";
     state.weather.humidity = 55;
     state.weather.windSpeed = "10 mph";
   }
 }
 
 function renderDashboard() {
-  const tempVal =
-    state.unit === "F" ? `${state.weather.tempF}°F` : `${state.weather.tempC}°C`;
+  const tempVal = state.unit === "F" ? `${state.weather.tempF}°F` : `${state.weather.tempC}°C`;
 
-  if (document.getElementById("locationName"))
-    document.getElementById("locationName").innerText = state.weather.city;
-  if (document.getElementById("tempDisplay"))
-    document.getElementById("tempDisplay").innerText = tempVal;
-  if (document.getElementById("conditionText"))
-    document.getElementById("conditionText").innerText = state.weather.condition;
-  if (document.getElementById("humidityVal"))
-    document.getElementById("humidityVal").innerText = `${state.weather.humidity}%`;
-  if (document.getElementById("windVal"))
-    document.getElementById("windVal").innerText = state.weather.windSpeed;
+  if (document.getElementById("locationName")) document.getElementById("locationName").innerText = state.weather.city;
+  if (document.getElementById("tempDisplay")) document.getElementById("tempDisplay").innerText = tempVal;
+  if (document.getElementById("conditionText")) document.getElementById("conditionText").innerText = state.weather.condition;
+  if (document.getElementById("humidityVal")) document.getElementById("humidityVal").innerText = `${state.weather.humidity}%`;
+  if (document.getElementById("windVal")) document.getElementById("windVal").innerText = state.weather.windSpeed;
 
-  updateAvatarColors(state.weather.tempF);
-  updateOutfitTags(state.weather.tempF);
+  renderCategoryRecommendations(state.weather.tempF);
 }
 
-function updateAvatarColors(tempF) {
-  const torso = document.getElementById("avatarTorso");
-  const jacket = document.getElementById("avatarJacket");
-  const sleeveL = document.getElementById("sleeveLeft");
-  const sleeveR = document.getElementById("sleeveRight");
-  const pantsFull = document.getElementById("pantsFull");
-  const pantsShorts = document.getElementById("pantsShorts");
-  const legsBareL = document.getElementById("legsBare");
-  const legsBareR = document.getElementById("legsBareRight");
-  const shoeL = document.getElementById("shoeLeft");
-  const shoeR = document.getElementById("shoeRight");
-  const hat = document.getElementById("avatarHat");
+function renderCategoryRecommendations(tempF) {
+  // 1. Render all selected style choices as options
+  renderTags("styleCategoryRecommendations", state.preferences.preferredStyles, true);
 
-  const styles = state.preferences.preferredStyles;
-  const isAthletic = styles.includes("athletic");
-  const isFormal = styles.includes("formal");
-  const expression = state.preferences.genderExpression;
-
-  // Cold Weather
+  // 2. Filter Tops based on temperature threshold
+  let tops = state.preferences.topsStyle;
   if (tempF <= state.preferences.coldThreshold) {
-    if (jacket) jacket.classList.remove("hidden");
-    if (hat) hat.classList.remove("hidden");
-    if (pantsShorts) pantsShorts.classList.add("hidden");
-    if (legsBareL) legsBareL.classList.add("hidden");
-    if (legsBareR) legsBareR.classList.add("hidden");
-    if (pantsFull) pantsFull.classList.remove("hidden");
-
-    if (isFormal) {
-      if (torso) torso.setAttribute("fill", "#1a202c");
-      if (pantsFull) pantsFull.setAttribute("fill", "#2d3748");
-      if (shoeL && shoeR) {
-        shoeL.setAttribute("fill", "#000000");
-        shoeR.setAttribute("fill", "#000000");
-      }
-    } else if (isAthletic) {
-      if (torso) torso.setAttribute("fill", "#3182ce");
-      if (pantsFull) pantsFull.setAttribute("fill", "#1a202c");
-      if (shoeL && shoeR) {
-        shoeL.setAttribute("fill", "#e53e3e");
-        shoeR.setAttribute("fill", "#e53e3e");
-      }
-    } else {
-      if (torso) torso.setAttribute("fill", "#dd6b20");
-      if (pantsFull) pantsFull.setAttribute("fill", "#2b6cb0");
-      if (shoeL && shoeR) {
-        shoeL.setAttribute("fill", "#744210");
-        shoeR.setAttribute("fill", "#744210");
-      }
-    }
+    tops = tops.filter(item => item !== "Tank top");
   }
-  // Hot Weather
-  else if (tempF >= state.preferences.heatThreshold) {
-    if (jacket) jacket.classList.add("hidden");
-    if (hat) hat.classList.add("hidden");
-    if (pantsFull) pantsFull.classList.add("hidden");
-    if (pantsShorts) pantsShorts.classList.remove("hidden");
-    if (legsBareL) legsBareL.classList.remove("hidden");
-    if (legsBareR) legsBareR.classList.remove("hidden");
+  renderTags("topRecommendations", tops.length ? tops : ["Long Sleeve Shirts", "Sweaters"]);
 
-    if (sleeveL && sleeveR) {
-      sleeveL.setAttribute("height", "14");
-      sleeveR.setAttribute("height", "14");
-    }
-
-    if (isAthletic) {
-      if (torso) torso.setAttribute("fill", "#e53e3e");
-      if (pantsShorts) pantsShorts.setAttribute("fill", "#2d3748");
-      if (shoeL && shoeR) {
-        shoeL.setAttribute("fill", "#319795");
-        shoeR.setAttribute("fill", "#319795");
-      }
-    } else if (isFormal) {
-      if (torso) torso.setAttribute("fill", "#edf2f7");
-      if (pantsShorts) pantsShorts.setAttribute("fill", "#718096");
-      if (shoeL && shoeR) {
-        shoeL.setAttribute("fill", "#4a5568");
-        shoeR.setAttribute("fill", "#4a5568");
-      }
-    } else {
-      if (torso) torso.setAttribute("fill", expression < 5 ? "#ed64a6" : "#4299e1");
-      if (pantsShorts) pantsShorts.setAttribute("fill", "#cbd5e0");
-      if (shoeL && shoeR) {
-        shoeL.setAttribute("fill", "#a0aec0");
-        shoeR.setAttribute("fill", "#a0aec0");
-      }
-    }
-  }
-  // Mild Weather
-  else {
-    if (jacket) jacket.classList.add("hidden");
-    if (hat) hat.classList.add("hidden");
-    if (pantsShorts) pantsShorts.classList.add("hidden");
-    if (legsBareL) legsBareL.classList.add("hidden");
-    if (legsBareR) legsBareR.classList.add("hidden");
-    if (pantsFull) pantsFull.classList.remove("hidden");
-
-    if (sleeveL && sleeveR) {
-      sleeveL.setAttribute("height", "25");
-      sleeveR.setAttribute("height", "25");
-    }
-
-    if (torso) torso.setAttribute("fill", expression < 5 ? "#9f7aea" : "#3182ce");
-    if (pantsFull) pantsFull.setAttribute("fill", "#2d3748");
-    if (shoeL && shoeR) {
-      shoeL.setAttribute("fill", "#1a202c");
-      shoeR.setAttribute("fill", "#1a202c");
-    }
-  }
-}
-
-function updateOutfitTags(tempF) {
-  const styles = state.preferences.preferredStyles;
-  let tops = [];
-  let bottoms = [];
-  let gear = [];
-
+  // 3. Filter Bottoms based on temperature threshold
+  let bottoms = state.preferences.bottomsStyle;
   if (tempF <= state.preferences.coldThreshold) {
-    if (styles.includes("formal")) {
-      tops.push("Overcoat", "Wool Blazer");
-      bottoms.push("Dress Trousers");
-      gear.push("Leather Boots", "Scarf");
-    }
-    if (styles.includes("athletic")) {
-      tops.push("Thermal Fleece", "Windbreaker");
-      bottoms.push("Insulated Joggers");
-      gear.push("Running Sneakers", "Sport Beanie");
-    }
-    if (styles.includes("casual") || (!styles.includes("formal") && !styles.includes("athletic"))) {
-      tops.push(...state.preferences.coldStyle);
-      bottoms.push("Heavy Denim", "Chinos");
-      gear.push("Knit Beanie", "Winter Boots");
-    }
+    bottoms = bottoms.filter(item => item !== "Shorts");
   } else if (tempF >= state.preferences.heatThreshold) {
-    if (styles.includes("formal")) {
-      tops.push("Linen Button-Down", "Short-Sleeve Polo");
-      bottoms.push("Tailored Chino Shorts", "Light Slacks");
-      gear.push("Loafers", "Sunglasses");
-    }
-    if (styles.includes("athletic")) {
-      tops.push("Dri-FIT Tank", "Moisture-Wicking Tee");
-      bottoms.push("Running Shorts", "Breathable Leggings");
-      gear.push("Light Trainer Shoes", "Visor");
-    }
-    if (styles.includes("casual") || (!styles.includes("formal") && !styles.includes("athletic"))) {
-      tops.push(...state.preferences.hotStyle);
-      bottoms.push("Denim Shorts", "Cotton Shorts");
-      gear.push("Canvas Sneakers", "Sunglasses");
-    }
-  } else {
-    if (styles.includes("formal")) {
-      tops.push("Dress Shirt", "Light Blazer");
-      bottoms.push("Tailored Trousers");
-      gear.push("Oxford Shoes");
-    }
-    if (styles.includes("athletic")) {
-      tops.push("Track Jacket", "Long-Sleeve Performance Tee");
-      bottoms.push("Athletic Joggers");
-      gear.push("Running Shoes");
-    }
-    if (styles.includes("casual") || (!styles.includes("formal") && !styles.includes("athletic"))) {
-      tops.push("Denim Jacket", "Cardigan", "Light Sweatshirt");
-      bottoms.push("Jeans", "Casual Chinos");
-      gear.push("Everyday Sneakers");
-    }
+    bottoms = bottoms.length ? bottoms : ["Shorts", "Light Linen Pants"];
   }
+  renderTags("bottomRecommendations", bottoms.length ? bottoms : ["Jeans", "Chinos / Trousers"]);
 
-  renderTags("topRecommendations", [...new Set(tops)]);
-  renderTags("bottomRecommendations", [...new Set(bottoms)]);
-  renderTags("gearRecommendations", [...new Set(gear)]);
+  // 4. Render Outerwear/Layers options based on weather
+  let layers = [];
+  if (tempF <= state.preferences.coldThreshold) {
+    layers = state.preferences.layersStyle.length ? state.preferences.layersStyle : ["Puffer Jacket / Heavy Coat", "Hoodie"];
+  } else if (tempF < state.preferences.heatThreshold) {
+    layers = state.preferences.layersStyle.filter(item => !item.includes("Heavy Coat"));
+    if (!layers.length) layers = ["Light Sweater", "Cardigan"];
+  } else {
+    layers = ["No heavy layers needed"];
+  }
+  renderTags("layerRecommendations", layers);
+
+  // 5. Render Shoes options
+  let shoes = state.preferences.shoesStyle;
+  if (tempF <= state.preferences.coldThreshold) {
+    shoes = shoes.filter(item => item !== "Sandals / Slides");
+  }
+  renderTags("shoesRecommendations", shoes.length ? shoes : ["Sneakers", "Boots"]);
+
+  // 6. Render Accessories options
+  let accessories = state.preferences.accessoriesStyle;
+  renderTags("gearRecommendations", accessories.length ? accessories : ["Sunglasses"]);
 }
 
-function renderTags(elementId, itemsArray) {
+function renderTags(elementId, itemsArray, isStyleTag = false) {
   const container = document.getElementById(elementId);
   if (!container) return;
   container.innerHTML = "";
+
   itemsArray.forEach((item) => {
     const span = document.createElement("span");
     span.className = "tag";
+    if (isStyleTag) {
+      span.style.background = "var(--primary-color, #3b82f6)";
+      span.style.color = "#ffffff";
+    }
     span.innerText = item;
     container.appendChild(span);
   });
@@ -364,12 +226,14 @@ function updateUnitToggleDisplay() {
 function handleChatSubmit() {
   const input = document.getElementById("chatInput");
   if (!input || !input.value.trim()) return;
+
   const text = input.value.trim();
   appendChat(text, "user");
   input.value = "";
+
   setTimeout(() => {
     appendChat(
-      `For ${state.weather.tempF}°F weather in ${state.weather.city}, "${text}" is a solid match for your selected preferences!`,
+      `For ${state.weather.tempF}°F weather in ${state.weather.city}, "${text}" works great with your selected options!`,
       "bot"
     );
   }, 400);
@@ -378,6 +242,7 @@ function handleChatSubmit() {
 function appendChat(text, sender) {
   const chatMessages = document.getElementById("chatMessages");
   if (!chatMessages) return;
+
   const bubble = document.createElement("div");
   bubble.className = `chat-bubble ${sender}`;
   bubble.innerText = text;
