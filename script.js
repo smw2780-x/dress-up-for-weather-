@@ -1,6 +1,8 @@
 /**
  * WeatherWear - Personal Weather Dashboard & Style Advisor
  */
+
+// Replace with your valid OpenWeatherMap API key (e.g. "a1b2c3d4e5...")
 const OPENWEATHER_API_KEY = "YOUR_OPENWEATHER_API_KEY";
 
 const state = {
@@ -12,7 +14,7 @@ const state = {
     preferredStyles: ["casual"],
     genderExpression: 5,
     hotStyle: ["T-shirt", "Shorts"],
-    coldStyle: ["Hoodie", "Wool Coat"]
+    coldStyle: ["Hoodie", "Wool Coat"],
   },
   weather: {
     city: "New York",
@@ -21,8 +23,8 @@ const state = {
     condition: "Partly Cloudy",
     iconCode: "02d",
     humidity: 55,
-    windSpeed: "10 mph"
-  }
+    windSpeed: "10 mph",
+  },
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -81,13 +83,19 @@ function saveStep1Preferences() {
   if (heatVal) state.preferences.heatThreshold = parseInt(heatVal.value, 10);
   if (genderVal) state.preferences.genderExpression = parseInt(genderVal.value, 10);
 
-  const selectedStyles = Array.from(document.querySelectorAll('input[name="preferredStyle"]:checked')).map(el => el.value);
+  const selectedStyles = Array.from(
+    document.querySelectorAll('input[name="preferredStyle"]:checked')
+  ).map((el) => el.value);
   if (selectedStyles.length) state.preferences.preferredStyles = selectedStyles;
 
-  const hotChecked = Array.from(document.querySelectorAll('input[name="hotStyle"]:checked')).map(el => el.value);
+  const hotChecked = Array.from(
+    document.querySelectorAll('input[name="hotStyle"]:checked')
+  ).map((el) => el.value);
   if (hotChecked.length) state.preferences.hotStyle = hotChecked;
 
-  const coldChecked = Array.from(document.querySelectorAll('input[name="coldStyle"]:checked')).map(el => el.value);
+  const coldChecked = Array.from(
+    document.querySelectorAll('input[name="coldStyle"]:checked')
+  ).map((el) => el.value);
   if (coldChecked.length) state.preferences.coldStyle = coldChecked;
 }
 
@@ -120,10 +128,13 @@ function showDashboard() {
 
 async function fetchWeatherData(cityName) {
   try {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&units=imperial&appid=${OPENWEATHER_API_KEY}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+      cityName
+    )}&units=imperial&appid=${OPENWEATHER_API_KEY}`;
     const response = await fetch(url);
     if (!response.ok) throw new Error("City not found");
     const data = await response.json();
+
     state.weather.city = `${data.name}, ${data.sys.country}`;
     state.weather.tempF = Math.round(data.main.temp);
     state.weather.tempC = Math.round(((data.main.temp - 32) * 5) / 9);
@@ -144,12 +155,19 @@ async function fetchWeatherData(cityName) {
 }
 
 function renderDashboard() {
-  const tempVal = state.unit === "F" ? `${state.weather.tempF}°F` : `${state.weather.tempC}°C`;
-  if (document.getElementById("locationName")) document.getElementById("locationName").innerText = state.weather.city;
-  if (document.getElementById("tempDisplay")) document.getElementById("tempDisplay").innerText = tempVal;
-  if (document.getElementById("conditionText")) document.getElementById("conditionText").innerText = state.weather.condition;
-  if (document.getElementById("humidityVal")) document.getElementById("humidityVal").innerText = `${state.weather.humidity}%`;
-  if (document.getElementById("windVal")) document.getElementById("windVal").innerText = state.weather.windSpeed;
+  const tempVal =
+    state.unit === "F" ? `${state.weather.tempF}°F` : `${state.weather.tempC}°C`;
+
+  if (document.getElementById("locationName"))
+    document.getElementById("locationName").innerText = state.weather.city;
+  if (document.getElementById("tempDisplay"))
+    document.getElementById("tempDisplay").innerText = tempVal;
+  if (document.getElementById("conditionText"))
+    document.getElementById("conditionText").innerText = state.weather.condition;
+  if (document.getElementById("humidityVal"))
+    document.getElementById("humidityVal").innerText = `${state.weather.humidity}%`;
+  if (document.getElementById("windVal"))
+    document.getElementById("windVal").innerText = state.weather.windSpeed;
 
   updateAvatarColors(state.weather.tempF);
   updateOutfitTags(state.weather.tempF);
@@ -185,17 +203,26 @@ function updateAvatarColors(tempF) {
     if (isFormal) {
       if (torso) torso.setAttribute("fill", "#1a202c");
       if (pantsFull) pantsFull.setAttribute("fill", "#2d3748");
-      if (shoeL && shoeR) { shoeL.setAttribute("fill", "#000000"); shoeR.setAttribute("fill", "#000000"); }
+      if (shoeL && shoeR) {
+        shoeL.setAttribute("fill", "#000000");
+        shoeR.setAttribute("fill", "#000000");
+      }
     } else if (isAthletic) {
       if (torso) torso.setAttribute("fill", "#3182ce");
       if (pantsFull) pantsFull.setAttribute("fill", "#1a202c");
-      if (shoeL && shoeR) { shoeL.setAttribute("fill", "#e53e3e"); shoeR.setAttribute("fill", "#e53e3e"); }
+      if (shoeL && shoeR) {
+        shoeL.setAttribute("fill", "#e53e3e");
+        shoeR.setAttribute("fill", "#e53e3e");
+      }
     } else {
       if (torso) torso.setAttribute("fill", "#dd6b20");
       if (pantsFull) pantsFull.setAttribute("fill", "#2b6cb0");
-      if (shoeL && shoeR) { shoeL.setAttribute("fill", "#744210"); shoeR.setAttribute("fill", "#744210"); }
+      if (shoeL && shoeR) {
+        shoeL.setAttribute("fill", "#744210");
+        shoeR.setAttribute("fill", "#744210");
+      }
     }
-  } 
+  }
   // Hot Weather
   else if (tempF >= state.preferences.heatThreshold) {
     if (jacket) jacket.classList.add("hidden");
@@ -213,17 +240,26 @@ function updateAvatarColors(tempF) {
     if (isAthletic) {
       if (torso) torso.setAttribute("fill", "#e53e3e");
       if (pantsShorts) pantsShorts.setAttribute("fill", "#2d3748");
-      if (shoeL && shoeR) { shoeL.setAttribute("fill", "#319795"); shoeR.setAttribute("fill", "#319795"); }
+      if (shoeL && shoeR) {
+        shoeL.setAttribute("fill", "#319795");
+        shoeR.setAttribute("fill", "#319795");
+      }
     } else if (isFormal) {
       if (torso) torso.setAttribute("fill", "#edf2f7");
       if (pantsShorts) pantsShorts.setAttribute("fill", "#718096");
-      if (shoeL && shoeR) { shoeL.setAttribute("fill", "#4a5568"); shoeR.setAttribute("fill", "#4a5568"); }
+      if (shoeL && shoeR) {
+        shoeL.setAttribute("fill", "#4a5568");
+        shoeR.setAttribute("fill", "#4a5568");
+      }
     } else {
       if (torso) torso.setAttribute("fill", expression < 5 ? "#ed64a6" : "#4299e1");
       if (pantsShorts) pantsShorts.setAttribute("fill", "#cbd5e0");
-      if (shoeL && shoeR) { shoeL.setAttribute("fill", "#a0aec0"); shoeR.setAttribute("fill", "#a0aec0"); }
+      if (shoeL && shoeR) {
+        shoeL.setAttribute("fill", "#a0aec0");
+        shoeR.setAttribute("fill", "#a0aec0");
+      }
     }
-  } 
+  }
   // Mild Weather
   else {
     if (jacket) jacket.classList.add("hidden");
@@ -240,7 +276,10 @@ function updateAvatarColors(tempF) {
 
     if (torso) torso.setAttribute("fill", expression < 5 ? "#9f7aea" : "#3182ce");
     if (pantsFull) pantsFull.setAttribute("fill", "#2d3748");
-    if (shoeL && shoeR) { shoeL.setAttribute("fill", "#1a202c"); shoeR.setAttribute("fill", "#1a202c"); }
+    if (shoeL && shoeR) {
+      shoeL.setAttribute("fill", "#1a202c");
+      shoeR.setAttribute("fill", "#1a202c");
+    }
   }
 }
 
@@ -309,7 +348,7 @@ function renderTags(elementId, itemsArray) {
   const container = document.getElementById(elementId);
   if (!container) return;
   container.innerHTML = "";
-  itemsArray.forEach(item => {
+  itemsArray.forEach((item) => {
     const span = document.createElement("span");
     span.className = "tag";
     span.innerText = item;
@@ -329,7 +368,10 @@ function handleChatSubmit() {
   appendChat(text, "user");
   input.value = "";
   setTimeout(() => {
-    appendChat(`For ${state.weather.tempF}°F weather in ${state.weather.city}, "${text}" is a solid match for your selected preferences!`, "bot");
+    appendChat(
+      `For ${state.weather.tempF}°F weather in ${state.weather.city}, "${text}" is a solid match for your selected preferences!`,
+      "bot"
+    );
   }, 400);
 }
 
