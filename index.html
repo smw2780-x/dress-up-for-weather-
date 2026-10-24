@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <div class="app-container">
     <header>
       <div class="logo">🌤️ WeatherWear</div>
@@ -27,17 +26,28 @@
 
     <!-- ONBOARDING FLOW -->
     <section id="onboardingSection" class="card">
-      
       <!-- STEP 1: USER PREFERENCES -->
       <div id="step1Content">
         <h2>Step 1: Customize Your Preferences</h2>
-        <p style="color: var(--text-muted); margin-bottom: 20px;">Help us understand your temperature tolerance and style choices.</p>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">
+          Help us understand your temperature tolerance and style choices.
+        </p>
 
         <form id="preferencesForm">
-          <!-- Cold Sensitivity -->
+          <!-- Cold Sensitivity with Live Value -->
           <div class="survey-group">
             <label for="coldScale">When do you start feeling COLD?</label>
-            <input type="range" id="coldScale" min="30" max="70" value="50">
+            <input 
+              type="range" 
+              id="coldScale" 
+              min="30" 
+              max="70" 
+              value="50"
+              oninput="document.getElementById('coldTempVal').innerText = this.value + '°F'"
+            >
+            <div style="text-align: center; font-weight: bold; margin-top: 6px; color: var(--primary-color, #3b82f6);">
+              Selected Threshold: <span id="coldTempVal">50°F</span>
+            </div>
             <div class="scale-labels">
               <span>30°F (High Tolerance)</span>
               <span>50°F (Average)</span>
@@ -45,10 +55,20 @@
             </div>
           </div>
 
-          <!-- Heat Sensitivity -->
+          <!-- Heat Sensitivity with Live Value -->
           <div class="survey-group">
             <label for="heatScale">When do you start feeling HOT?</label>
-            <input type="range" id="heatScale" min="65" max="95" value="80">
+            <input 
+              type="range" 
+              id="heatScale" 
+              min="65" 
+              max="95" 
+              value="80"
+              oninput="document.getElementById('heatTempVal').innerText = this.value + '°F'"
+            >
+            <div style="text-align: center; font-weight: bold; margin-top: 6px; color: var(--primary-color, #3b82f6);">
+              Selected Threshold: <span id="heatTempVal">80°F</span>
+            </div>
             <div class="scale-labels">
               <span>65°F (Low Tolerance)</span>
               <span>80°F (Average)</span>
@@ -56,13 +76,40 @@
             </div>
           </div>
 
-          <!-- Style Preference Tier -->
+          <!-- Style Selection (Checkboxes for Casual, Formal, Athletic) -->
           <div class="survey-group">
-            <label>Default Outfit Style:</label>
+            <label>Default Outfit Styles (Select all that apply):</label>
             <div class="checkbox-grid">
-              <label class="checkbox-label"><input type="radio" id="stylePref" name="preferredStyle" value="casual" checked> Casual</label>
-              <label class="checkbox-label"><input type="radio" name="preferredStyle" value="formal"> Formal</label>
-              <label class="checkbox-label"><input type="radio" name="preferredStyle" value="athletic"> Athletic</label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="casual" checked> Casual
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="formal"> Formal
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="athletic"> Athletic
+              </label>
+            </div>
+          </div>
+
+          <!-- Feminine / Masculine Style Scale (1 to 10) -->
+          <div class="survey-group">
+            <label for="genderStyleScale">Style Presentation / Expression:</label>
+            <input 
+              type="range" 
+              id="genderStyleScale" 
+              min="1" 
+              max="10" 
+              value="5" 
+              oninput="document.getElementById('genderStyleVal').innerText = this.value"
+            >
+            <div style="text-align: center; font-weight: bold; margin-top: 6px; color: var(--primary-color, #3b82f6);">
+              Selected Score: <span id="genderStyleVal">5</span> / 10
+            </div>
+            <div class="scale-labels">
+              <span>1 (Feminine)</span>
+              <span>5 (Neutral)</span>
+              <span>10 (Masculine)</span>
             </div>
           </div>
 
@@ -95,7 +142,9 @@
       <!-- STEP 2: WEATHER CHANNEL / LOCATION SETUP -->
       <div id="step2Content" class="hidden">
         <h2>Step 2: Check Today's Weather</h2>
-        <p style="color: var(--text-muted); margin-bottom: 20px;">Enter your location to pull real-time condition data from the weather channel.</p>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">
+          Enter your location to pull real-time condition data from the weather channel.
+        </p>
 
         <div class="survey-group">
           <label for="initialCityInput">Enter Your City or Zip Code:</label>
@@ -118,12 +167,10 @@
           <button type="button" id="finishOnboardingBtn" class="btn-primary">Fetch Forecast & See Outfits</button>
         </div>
       </div>
-
     </section>
 
     <!-- SECTION 2: DAILY ROUTINE DASHBOARD -->
     <main id="dashboardSection" class="hidden">
-      
       <!-- Quick Location & Weather Refresher -->
       <div class="search-bar">
         <input type="text" id="cityInput" placeholder="Change city..." value="New York">
@@ -149,10 +196,10 @@
         <!-- Outfit Suggestions Card WITH Avatar -->
         <div class="card">
           <h3>Today's Recommended Outfit</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Matched to current forecast & your personal thermal thresholds</p>
-
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
+            Matched to current forecast & your personal thermal thresholds
+          </p>
           <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-            
             <!-- Avatar Visual Model Box -->
             <div style="width: 110px; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid var(--border-color, #e2e8f0);">
               <svg viewBox="0 0 100 200" width="90" height="180" xmlns="http://www.w3.org/2000/svg">
@@ -181,7 +228,6 @@
                   <span class="tag">Denim Jacket</span>
                 </div>
               </div>
-
               <div class="outfit-category">
                 <h4>Bottoms</h4>
                 <div class="tags" id="bottomRecommendations">
@@ -189,7 +235,6 @@
                   <span class="tag">Chinos</span>
                 </div>
               </div>
-
               <div class="outfit-category">
                 <h4>Footwear & Weather Gear</h4>
                 <div class="tags" id="gearRecommendations">
@@ -198,7 +243,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -206,14 +250,14 @@
       <!-- SECTION 3: CLOTHING AI CHAT BOT -->
       <section class="card chat-container">
         <h3>Outfit Advisor Chat 💬</h3>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">Ask if a specific item or style works for today's weather!</p>
-        
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">
+          Ask if a specific item or style works for today's weather!
+        </p>
         <div class="chat-messages" id="chatMessages">
           <div class="chat-bubble bot">
             Hello! Ask me anything about what to wear today (e.g., "Can I wear shorts today?", "Is a leather jacket too warm?").
           </div>
         </div>
-
         <form id="chatForm" class="chat-input-form">
           <input type="text" id="chatInput" placeholder="Ask about an outfit item..." required>
           <button type="submit" class="btn-primary" style="width: auto;">Send</button>
