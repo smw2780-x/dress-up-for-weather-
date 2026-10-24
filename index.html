@@ -139,11 +139,11 @@
         </form>
       </div>
 
-      <!-- STEP 2: WEATHER CHANNEL / LOCATION SETUP -->
+      <!-- STEP 2: WEATHER LOCATION SETUP -->
       <div id="step2Content" class="hidden">
         <h2>Step 2: Check Today's Weather</h2>
         <p style="color: var(--text-muted); margin-bottom: 20px;">
-          Enter your location to pull real-time condition data from the weather channel.
+          Enter your location to pull real-time condition data.
         </p>
 
         <div class="survey-group">
@@ -169,16 +169,16 @@
       </div>
     </section>
 
-    <!-- SECTION 2: DAILY ROUTINE DASHBOARD -->
+    <!-- DASHBOARD SECTION -->
     <main id="dashboardSection" class="hidden">
-      <!-- Quick Location & Weather Refresher -->
+      <!-- Search Bar -->
       <div class="search-bar">
         <input type="text" id="cityInput" placeholder="Change city..." value="New York">
         <button id="searchBtn" class="btn-primary">Update Weather</button>
       </div>
 
       <div class="dashboard-grid">
-        <!-- Weather Summary Card -->
+        <!-- Weather Info Card -->
         <div class="card weather-info">
           <div class="weather-header-row">
             <h3 id="locationName">New York, US</h3>
@@ -193,79 +193,23 @@
           <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary-color, #3b82f6); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Profile & Location</button>
         </div>
 
-        <!-- Outfit Suggestions Card WITH Avatar -->
+        <!-- Realistic Avatar & Recommendations Card -->
         <div class="card">
           <h3>Today's Recommended Outfit</h3>
           <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
             Matched to current forecast & your personal thermal thresholds
           </p>
           <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-            <!-- Avatar Visual Model Box -->
-            <div style="width: 110px; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid var(--border-color, #e2e8f0);">
-              <svg viewBox="0 0 100 200" width="90" height="180" xmlns="http://www.w3.org/2000/svg">
-                <!-- Head -->
-                <circle cx="50" cy="22" r="12" fill="#d4a373" />
-                <rect x="47" y="32" width="6" height="8" fill="#c68b59" />
-                <!-- Torso / Top Clothing Layer -->
-                <path id="avatarTorso" d="M 30 40 L 70 40 L 66 105 L 34 105 Z" fill="#e0683b" />
-                <!-- Arms -->
-                <rect x="20" y="42" width="8" height="55" rx="4" fill="#d4a373" />
-                <rect x="72" y="42" width="8" height="55" rx="4" fill="#d4a373" />
-                <!-- Legs / Bottoms Layer -->
-                <path id="avatarLegs" d="M 34 105 L 48 105 L 46 185 L 32 185 Z M 52 105 L 66 105 L 68 185 L 54 185 Z" fill="#2d3748" />
-                <!-- Shoes -->
-                <rect id="avatarShoesLeft" x="30" y="185" width="16" height="8" rx="2" fill="#1a202c" />
-                <rect id="avatarShoesRight" x="54" y="185" width="16" height="8" rx="2" fill="#1a202c" />
-              </svg>
-            </div>
+            
+            <!-- REALISTIC DETAILED AVATAR SVG -->
+            <div style="width: 140px; background: #f8fafc; border-radius: 16px; padding: 12px; text-align: center; border: 1px solid var(--border-color, #e2e8f0); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+              <svg viewBox="0 0 120 220" width="110" height="200" xmlns="http://www.w3.org/2000/svg" id="avatarSvg">
+                <defs>
+                  <filter id="avatarShadow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+                  </filter>
+                </defs>
 
-            <!-- Outfit Tags -->
-            <div style="flex: 1; min-width: 200px;">
-              <div class="outfit-category">
-                <h4>Tops & Outerwear</h4>
-                <div class="tags" id="topRecommendations">
-                  <span class="tag">Light Sweater</span>
-                  <span class="tag">Denim Jacket</span>
-                </div>
-              </div>
-              <div class="outfit-category">
-                <h4>Bottoms</h4>
-                <div class="tags" id="bottomRecommendations">
-                  <span class="tag">Jeans</span>
-                  <span class="tag">Chinos</span>
-                </div>
-              </div>
-              <div class="outfit-category">
-                <h4>Footwear & Weather Gear</h4>
-                <div class="tags" id="gearRecommendations">
-                  <span class="tag">Sneakers</span>
-                  <span class="tag">Sunglasses</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 3: CLOTHING AI CHAT BOT -->
-      <section class="card chat-container">
-        <h3>Outfit Advisor Chat 💬</h3>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">
-          Ask if a specific item or style works for today's weather!
-        </p>
-        <div class="chat-messages" id="chatMessages">
-          <div class="chat-bubble bot">
-            Hello! Ask me anything about what to wear today (e.g., "Can I wear shorts today?", "Is a leather jacket too warm?").
-          </div>
-        </div>
-        <form id="chatForm" class="chat-input-form">
-          <input type="text" id="chatInput" placeholder="Ask about an outfit item..." required>
-          <button type="submit" class="btn-primary" style="width: auto;">Send</button>
-        </form>
-      </section>
-    </main>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+                <!-- Head & Hair -->
+                <g id="avatarHead" filter="url(#avatarShadow)">
+                  <path id="avatarHair" d="M 42 12 Q 60 2 78 12 Q 82 25 78 30 Q 60 22 42 30 Z" fill="#2d3748" />
