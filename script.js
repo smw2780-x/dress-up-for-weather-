@@ -1,21 +1,16 @@
 /**
  * WeatherWear - Option A: Personal Weather Dashboard
- * Integrated with OpenWeather API
  */
 
-// Replace with your actual OpenWeather API key
 const OPENWEATHER_API_KEY = "YOUR_OPENWEATHER_API_KEY";
 
-// Global Application State
 const state = {
-  unit: "F", // "F" or "C"
+  unit: "F",
   currentStep: 1,
   preferences: {
     coldThreshold: 50,
     heatThreshold: 80,
-    preferredStyles: ["casual"],
-    hotItems: [],
-    coldItems: []
+    preferredStyles: ["casual"]
   },
   weather: {
     city: "New York",
@@ -28,112 +23,119 @@ const state = {
   }
 };
 
-// Clothing Database for Recommendation Engine
 const clothingDatabase = {
   freezing: {
-    casual: { tops: ["Thermal Shirt", "Fleece Hoodie"], bottoms: ["Thermal Jeans"], outerwear: ["Heavy Down Parka"], footwear: ["Insulated Boots"], accessories: ["Beanie", "Scarf", "Gloves"] },
-    formal: { tops: ["Thermal Dress Shirt", "Cashmere Sweater"], bottoms: ["Heavy Wool Trousers"], outerwear: ["Wool Overcoat"], footwear: ["Lined Leather Boots"], accessories: ["Leather Gloves"] },
-    athletic: { tops: ["Thermal Compression Top"], bottoms: ["Thermal Running Tights"], outerwear: ["Insulated Running Jacket"], footwear: ["Trail Running Shoes"], accessories: ["Thermal Headband"] }
+    casual: { tops: ["Thermal Shirt", "Fleece Hoodie"], bottoms: ["Thermal Jeans"], outerwear: ["Heavy Down Parka"], footwear: ["Insulated Boots"], accessories: ["Beanie", "Gloves"] },
+    formal: { tops: ["Thermal Dress Shirt"], bottoms: ["Heavy Wool Trousers"], outerwear: ["Wool Overcoat"], footwear: ["Lined Leather Boots"], accessories: ["Gloves"] },
+    athletic: { tops: ["Thermal Compression Top"], bottoms: ["Thermal Running Tights"], outerwear: ["Insulated Jacket"], footwear: ["Trail Running Shoes"], accessories: ["Headband"] }
   },
   cold: {
-    casual: { tops: ["Long Sleeve Henley", "Knit Sweater"], bottoms: ["Jeans", "Cargo Pants"], outerwear: ["Puffer Jacket"], footwear: ["Leather Boots"], accessories: ["Knit Beanie"] },
-    formal: { tops: ["Dress Shirt", "Fine Sweater"], bottoms: ["Wool Trousers"], outerwear: ["Trench Coat"], footwear: ["Chelsea Boots"], accessories: ["Silk/Wool Scarf"] },
+    casual: { tops: ["Long Sleeve Henley"], bottoms: ["Jeans"], outerwear: ["Puffer Jacket"], footwear: ["Boots"], accessories: ["Knit Beanie"] },
+    formal: { tops: ["Dress Shirt"], bottoms: ["Wool Trousers"], outerwear: ["Trench Coat"], footwear: ["Chelsea Boots"], accessories: ["Scarf"] },
     athletic: { tops: ["Long Sleeve Tech Shirt"], bottoms: ["Fleece Joggers"], outerwear: ["Windbreaker"], footwear: ["Running Shoes"], accessories: ["Light Gloves"] }
   },
   mild: {
-    casual: { tops: ["Cotton T-Shirt", "Flannel Shirt"], bottoms: ["Jeans", "Chinos"], outerwear: ["Light Cardigan", "Bomber Jacket"], footwear: ["Sneakers"], accessories: ["Baseball Cap"] },
-    formal: { tops: ["Button-Down Shirt", "Blazer"], bottoms: ["Tailored Trousers"], outerwear: ["Unstructured Blazer"], footwear: ["Loafers"], accessories: ["Leather Watch"] },
-    athletic: { tops: ["Short Sleeve Tech Tee"], bottoms: ["Track Pants"], outerwear: ["Track Jacket"], footwear: ["Running Sneakers"], accessories: ["Sweatband"] }
+    casual: { tops: ["Cotton T-Shirt"], bottoms: ["Jeans"], outerwear: ["Light Cardigan"], footwear: ["Sneakers"], accessories: ["Baseball Cap"] },
+    formal: { tops: ["Button-Down Shirt"], bottoms: ["Tailored Trousers"], outerwear: ["Blazer"], footwear: ["Loafers"], accessories: ["Watch"] },
+    athletic: { tops: ["Short Sleeve Tee"], bottoms: ["Track Pants"], outerwear: ["Track Jacket"], footwear: ["Running Sneakers"], accessories: ["Sweatband"] }
   },
   warm: {
-    casual: { tops: ["Graphic T-Shirt", "Polo Shirt"], bottoms: ["Chino Shorts", "Light Jeans"], outerwear: [], footwear: ["Canvas Sneakers"], accessories: ["Sunglasses"] },
-    formal: { tops: ["Linen Shirt", "Dress Shirt"], bottoms: ["Linen Trousers"], outerwear: ["Linen Blazer"], footwear: ["Suede Loafers"], accessories: ["Pocket Square"] },
+    casual: { tops: ["Graphic T-Shirt"], bottoms: ["Chino Shorts"], outerwear: [], footwear: ["Canvas Sneakers"], accessories: ["Sunglasses"] },
+    formal: { tops: ["Linen Shirt"], bottoms: ["Linen Trousers"], outerwear: [], footwear: ["Suede Loafers"], accessories: ["Pocket Square"] },
     athletic: { tops: ["Breathable Tank Top"], bottoms: ["Running Shorts"], outerwear: [], footwear: ["Lightweight Trainers"], accessories: ["Visor"] }
   },
   hot: {
-    casual: { tops: ["Tank Top", "Light Linen Shirt"], bottoms: ["Athletic Shorts"], outerwear: [], footwear: ["Sandals"], accessories: ["Sun Hat", "Sunglasses"] },
-    formal: { tops: ["Short Sleeve Linen Shirt"], bottoms: ["Tropical Wool Trousers"], outerwear: [], footwear: ["Unlined Loafers"], accessories: ["Woven Hat"] },
-    athletic: { tops: ["Ultra-Light Tank Top"], bottoms: ["Mesh Running Shorts"], outerwear: [], footwear: ["Breathable Runners"], accessories: ["Hydration Belt"] }
+    casual: { tops: ["Tank Top"], bottoms: ["Athletic Shorts"], outerwear: [], footwear: ["Sandals"], accessories: ["Sun Hat", "Sunglasses"] },
+    formal: { tops: ["Short Sleeve Linen Shirt"], bottoms: ["Tropical Trousers"], outerwear: [], footwear: ["Unlined Loafers"], accessories: ["Hat"] },
+    athletic: { tops: ["Ultra-Light Tank"], bottoms: ["Mesh Shorts"], outerwear: [], footwear: ["Breathable Runners"], accessories: ["Hydration Belt"] }
   }
 };
 
-// Initialize App
+// Avatar Emoji Layers for "Bitmoji" visual representation
+const avatarLayers = {
+  freezing: { hat: "⛷️", torso: "🧥", legs: "👖", feet: "🥾" },
+  cold: { hat: "🧶", torso: "🧥", legs: "👖", feet: "🥾" },
+  mild: { hat: "🧢", torso: "👔", legs: "👖", feet: "👟" },
+  warm: { hat: "🕶️", torso: "👕", legs: "🩳", feet: "👟" },
+  hot: { hat: "👒", torso: "🎽", legs: "🩳", feet: "🩴" }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   setupEventListeners();
+  updateSliderReadouts();
   updateUnitToggleDisplay();
 });
 
 function setupEventListeners() {
-  // Navigation: Step 1 -> Step 2
-  const goToStep2Btn = document.getElementById("goToStep2Btn");
-  if (goToStep2Btn) {
-    goToStep2Btn.addEventListener("click", () => {
-      saveStep1Preferences();
-      switchStep(2);
-    });
+  // Slider Real-time Number Updates
+  const coldScale = document.getElementById("coldScale");
+  const heatScale = document.getElementById("heatScale");
+
+  if (coldScale) {
+    coldScale.addEventListener("input", updateSliderReadouts);
+  }
+  if (heatScale) {
+    heatScale.addEventListener("input", updateSliderReadouts);
   }
 
-  // Navigation: Step 2 -> Step 1
-  const backToStep1Btn = document.getElementById("backToStep1Btn");
-  if (backToStep1Btn) {
-    backToStep1Btn.addEventListener("click", () => switchStep(1));
-  }
+  // Navigation
+  document.getElementById("goToStep2Btn")?.addEventListener("click", () => {
+    saveStep1Preferences();
+    switchStep(2);
+  });
 
-  // Finish Onboarding & Load Live Weather
-  const finishOnboardingBtn = document.getElementById("finishOnboardingBtn");
-  if (finishOnboardingBtn) {
-    finishOnboardingBtn.addEventListener("click", async () => {
-      const cityInput = document.getElementById("initialCityInput").value.trim();
-      if (cityInput) state.weather.city = cityInput;
-      await fetchOpenWeatherData(state.weather.city);
-      showDashboard();
-    });
-  }
+  document.getElementById("backToStep1Btn")?.addEventListener("click", () => switchStep(1));
 
-  // Re-configure Profile
-  const reconfigureBtn = document.getElementById("reconfigureBtn");
-  if (reconfigureBtn) {
-    reconfigureBtn.addEventListener("click", () => {
-      document.getElementById("dashboardSection").classList.add("hidden");
-      document.getElementById("onboardingSection").classList.remove("hidden");
-      document.getElementById("stepIndicator").classList.remove("hidden");
-      switchStep(1);
-    });
-  }
+  document.getElementById("finishOnboardingBtn")?.addEventListener("click", async () => {
+    const cityInput = document.getElementById("initialCityInput").value.trim();
+    if (cityInput) state.weather.city = cityInput;
+    await fetchOpenWeatherData(state.weather.city);
+    showDashboard();
+  });
 
-  // Dashboard Location Search Update
-  const searchBtn = document.getElementById("searchBtn");
-  if (searchBtn) {
-    searchBtn.addEventListener("click", async () => {
-      const city = document.getElementById("cityInput").value.trim();
-      if (city) {
-        await fetchOpenWeatherData(city);
-        renderDashboard();
-      }
-    });
-  }
+  document.getElementById("reconfigureBtn")?.addEventListener("click", () => {
+    document.getElementById("dashboardSection").classList.add("hidden");
+    document.getElementById("onboardingSection").classList.remove("hidden");
+    document.getElementById("stepIndicator").classList.remove("hidden");
+    switchStep(1);
+  });
 
-  // Unit Toggle (°F / °C)
-  const unitToggle = document.getElementById("unitToggle");
-  if (unitToggle) {
-    unitToggle.addEventListener("click", () => {
-      state.unit = state.unit === "F" ? "C" : "F";
-      updateUnitToggleDisplay();
+  document.getElementById("searchBtn")?.addEventListener("click", async () => {
+    const city = document.getElementById("cityInput").value.trim();
+    if (city) {
+      await fetchOpenWeatherData(city);
       renderDashboard();
-    });
-  }
+    }
+  });
 
-  // Outfit Assistant Chat Form
-  const chatForm = document.getElementById("chatForm");
-  if (chatForm) {
-    chatForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      handleChatSubmit();
-    });
+  document.getElementById("unitToggle")?.addEventListener("click", () => {
+    state.unit = state.unit === "F" ? "C" : "F";
+    updateSliderReadouts();
+    updateUnitToggleDisplay();
+    renderDashboard();
+  });
+
+  document.getElementById("chatForm")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    handleChatSubmit();
+  });
+}
+
+function updateSliderReadouts() {
+  const coldValF = parseInt(document.getElementById("coldScale").value, 10);
+  const heatValF = parseInt(document.getElementById("heatScale").value, 10);
+
+  if (state.unit === "F") {
+    document.getElementById("coldReadout").innerText = `${coldValF}°F`;
+    document.getElementById("heatReadout").innerText = `${heatValF}°F`;
+  } else {
+    const coldValC = Math.round(((coldValF - 32) * 5) / 9);
+    const heatValC = Math.round(((heatValF - 32) * 5) / 9);
+    document.getElementById("coldReadout").innerText = `${coldValC}°C`;
+    document.getElementById("heatReadout").innerText = `${heatValC}°C`;
   }
 }
 
-// Save Preferences from Wizard
 function saveStep1Preferences() {
   state.preferences.coldThreshold = parseInt(document.getElementById("coldScale").value, 10);
   state.preferences.heatThreshold = parseInt(document.getElementById("heatScale").value, 10);
@@ -145,7 +147,6 @@ function saveStep1Preferences() {
   state.preferences.preferredStyles = selectedStyles.length > 0 ? selectedStyles : ["casual"];
 }
 
-// Wizard Step Switcher
 function switchStep(stepNumber) {
   state.currentStep = stepNumber;
   const step1Content = document.getElementById("step1Content");
@@ -173,19 +174,13 @@ function showDashboard() {
   renderDashboard();
 }
 
-/**
- * Data Layer: OpenWeather API Single Call
- */
 async function fetchOpenWeatherData(cityName) {
   try {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&units=imperial&appid=${OPENWEATHER_API_KEY}`;
     const response = await fetch(url);
-    
-    if (!response.ok) throw new Error("City not found or API error");
+    if (!response.ok) throw new Error("City not found");
     
     const data = await response.json();
-
-    // Processing Layer: Extract & Format Data
     state.weather.city = `${data.name}, ${data.sys.country}`;
     state.weather.tempF = Math.round(data.main.temp);
     state.weather.tempC = Math.round(((data.main.temp - 32) * 5) / 9);
@@ -194,8 +189,6 @@ async function fetchOpenWeatherData(cityName) {
     state.weather.humidity = data.main.humidity;
     state.weather.windSpeed = `${Math.round(data.wind.speed)} mph`;
   } catch (error) {
-    console.warn("Using fallback weather data due to API key error or network failure:", error.message);
-    // Fallback simulation for offline/preview testing
     const mockTempF = Math.floor(Math.sin(cityName.length) * 25 + 65);
     state.weather.city = cityName;
     state.weather.tempF = mockTempF;
@@ -218,9 +211,6 @@ function getTemperatureTier(tempF) {
   return "hot";
 }
 
-/**
- * UI Layer: Display Weather Conditions and Suggestions
- */
 function renderDashboard() {
   const tempVal = state.unit === "F" ? `${state.weather.tempF}°F` : `${state.weather.tempC}°C`;
   
@@ -228,17 +218,19 @@ function renderDashboard() {
   document.getElementById("tempDisplay").innerText = tempVal;
   document.getElementById("conditionText").innerText = state.weather.condition;
   
-  // Weather condition badge with icon mapping
   const badge = document.getElementById("weatherConditionBadge");
   const iconUrl = `https://openweathermap.org/img/wn/${state.weather.iconCode}.png`;
-  badge.innerHTML = `<img src="${iconUrl}" alt="weather icon" style="vertical-align: middle; width: 24px;"> ${state.weather.condition}`;
+  badge.innerHTML = `<img src="${iconUrl}" alt="icon" style="vertical-align: middle; width: 22px;"> ${state.weather.condition}`;
 
   document.getElementById("humidityVal").innerText = `${state.weather.humidity}%`;
   document.getElementById("windVal").innerText = state.weather.windSpeed;
 
   const currentTier = getTemperatureTier(state.weather.tempF);
-  const activeStyles = state.preferences.preferredStyles;
+  
+  // Render Avatar preview matching current temperature tier
+  renderAvatar(currentTier);
 
+  const activeStyles = state.preferences.preferredStyles;
   let combinedTops = [];
   let combinedBottoms = [];
   let combinedFootwear = [];
@@ -260,6 +252,14 @@ function renderDashboard() {
   renderTags("gearRecommendations", [...new Set([...combinedFootwear, ...combinedAccessories])]);
 }
 
+function renderAvatar(tier) {
+  const layer = avatarLayers[tier] || avatarLayers.mild;
+  document.getElementById("avatarHat").innerText = layer.hat;
+  document.getElementById("avatarTorso").innerText = layer.torso;
+  document.getElementById("avatarLegs").innerText = layer.legs;
+  document.getElementById("avatarFeet").innerText = layer.feet;
+}
+
 function renderTags(elementId, itemsArray) {
   const container = document.getElementById(elementId);
   container.innerHTML = "";
@@ -276,7 +276,6 @@ function updateUnitToggleDisplay() {
   if (btn) btn.innerText = `Unit: °${state.unit}`;
 }
 
-// Outfit Advisor Chat
 function handleChatSubmit() {
   const chatInput = document.getElementById("chatInput");
   const query = chatInput.value.trim();
@@ -307,13 +306,13 @@ function generateBotReply(query) {
   if (q.includes("short") || q.includes("shorts")) {
     return tempF >= state.preferences.heatThreshold - 5
       ? `Shorts are ideal for today's ${tempF}°F weather!`
-      : `It's slightly chilly for shorts today at ${tempF}°F. Consider pants or trousers instead.`;
+      : `It's slightly chilly for shorts today at ${tempF}°F. Consider pants instead.`;
   }
 
   if (q.includes("jacket") || q.includes("coat")) {
     return tempF <= state.preferences.coldThreshold
       ? `Yes, an outerwear layer is recommended for ${tempF}°F weather.`
-      : `A thick jacket may be too warm for today's temperature (${tempF}°F).`;
+      : `A jacket may be too warm for today's temperature (${tempF}°F).`;
   }
 
   return `For today's weather in ${state.weather.city} (${tempF}°F, ${state.weather.condition}), stick with your selected style layerings.`;
