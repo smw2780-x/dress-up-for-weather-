@@ -61,7 +61,7 @@
           </div>
 
           <div style="text-align: right; margin-top: 24px;">
-            <button type="button" class="btn" id="toStep2Btn">Next: Location & Weather ➔</button>
+            <button type="button" class="btn-primary" id="toStep2Btn">Next: Location & Weather ➔</button>
           </div>
         </form>
       </div>
@@ -74,8 +74,8 @@
         <div class="survey-group">
           <label>Choose location method:</label>
           <div style="display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap;">
-            <button type="button" class="btn" id="useGpsBtn" style="background: #059669;">📍 Use My Current Location</button>
-            <button type="button" class="btn btn-secondary" id="manualCityToggleBtn">🔍 Enter City Manually</button>
+            <button type="button" class="btn-primary" id="useGpsBtn" style="background: #059669;">📍 Use My Current Location</button>
+            <button type="button" class="btn-secondary" id="manualCityToggleBtn">🔍 Enter City Manually</button>
           </div>
         </div>
 
@@ -85,8 +85,8 @@
         </div>
 
         <div style="display: flex; justify-content: space-between; margin-top: 28px;">
-          <button type="button" class="btn btn-secondary" id="backToStep1Btn">⬅️ Back</button>
-          <button type="button" class="btn" id="finishOnboardingBtn">Get My Recommendation 🚀</button>
+          <button type="button" class="btn-secondary" id="backToStep1Btn">⬅️ Back</button>
+          <button type="button" class="btn-primary" id="finishOnboardingBtn">Get My Recommendation 🚀</button>
         </div>
       </div>
     </section>
@@ -119,42 +119,28 @@
           </button>
         </div>
 
-        <!-- Paper-Doll Avatar & Outfit Recommendation Card -->
+        <!-- Recommendation Card (Pure Clean Tags) -->
         <div class="card">
           <h3>Today's Recommended Outfit</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
             Matched to current forecast & your personal thermal thresholds
           </p>
 
-          <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-            
-            <!-- PAPER-DOLL AVATAR CONTAINER -->
-            <div class="paper-doll-container" id="paperDoll">
-              <img id="layerBody" class="avatar-layer" src="assets/body/avatar_base.png" alt="Avatar Base" />
-              <img id="layerBottom" class="avatar-layer" src="assets/bottoms/jeans.png" alt="Bottoms" />
-              <img id="layerTop" class="avatar-layer" src="assets/tops/tshirt.png" alt="Tops" />
-              <img id="layerOuter" class="avatar-layer" src="assets/outer/puffer_jacket.png" alt="Outerwear" style="display: none;" />
-              <img id="layerShoes" class="avatar-layer" src="assets/shoes/sneakers.png" alt="Shoes" />
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="outfit-category">
+              <h4>Tops & Outerwear</h4>
+              <div class="tags" id="topRecommendations"></div>
             </div>
 
-            <!-- Recommendation Tags -->
-            <div style="flex: 1; min-width: 200px;">
-              <div class="outfit-category">
-                <h4>Tops & Outerwear</h4>
-                <div class="tags" id="topRecommendations"></div>
-              </div>
-
-              <div class="outfit-category">
-                <h4>Bottoms</h4>
-                <div class="tags" id="bottomRecommendations"></div>
-              </div>
-
-              <div class="outfit-category">
-                <h4>Footwear & Weather Gear</h4>
-                <div class="tags" id="gearRecommendations"></div>
-              </div>
+            <div class="outfit-category">
+              <h4>Bottoms</h4>
+              <div class="tags" id="bottomRecommendations"></div>
             </div>
 
+            <div class="outfit-category">
+              <h4>Footwear & Weather Gear</h4>
+              <div class="tags" id="gearRecommendations"></div>
+            </div>
           </div>
         </div>
 
@@ -175,12 +161,12 @@
 
         <form id="chatForm" class="chat-input-form">
           <input type="text" id="chatInput" placeholder="Ask about an outfit item..." required>
-          <button type="submit" class="btn">Send</button>
+          <button type="submit" class="btn-primary">Send</button>
         </form>
       </section>
     </main>
   </div>
 
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
