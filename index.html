@@ -30,8 +30,8 @@
       
       <!-- STEP 1: USER PREFERENCES -->
       <div id="step1Content">
-        <h2>Step 1: Customize Your Thermal Profile</h2>
-        <p style="color: var(--text-muted); margin-bottom: 20px;">Adjust exact temperature points where weather feels too cold or too hot for you.</p>
+        <h2>Step 1: Customize Your Thermal & Style Profile</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Adjust exact temperature thresholds and your preferred style aesthetic.</p>
 
         <form id="preferencesForm">
           <!-- Cold Sensitivity -->
@@ -62,9 +62,23 @@
             </div>
           </div>
 
+          <!-- Feminine vs Masculine Style Spectrum (1 to 10) -->
+          <div class="survey-group">
+            <div class="label-with-value">
+              <label for="genderScale">Style Expression Spectrum:</label>
+              <span class="temp-readout" id="genderReadout">5 (Neutral)</span>
+            </div>
+            <input type="range" id="genderScale" min="1" max="10" value="5" step="1">
+            <div class="scale-labels">
+              <span>1 (Masculine)</span>
+              <span>5 (Neutral)</span>
+              <span>10 (Feminine)</span>
+            </div>
+          </div>
+
           <!-- Preferred Styles -->
           <div class="survey-group">
-            <label>Preferred Outfit Styles (Select all that apply):</label>
+            <label>Preferred Outfit Categories (Select all that apply):</label>
             <div class="checkbox-grid">
               <label class="checkbox-label">
                 <input type="checkbox" name="preferredStyle" value="casual" checked> Casual
@@ -124,7 +138,7 @@
           <p style="font-size: 0.9rem; color: var(--text-muted);">
             Humidity: <span id="humidityVal">55%</span> | Wind: <span id="windVal">10 mph</span>
           </p>
-          <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Thermal Thresholds</button>
+          <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Profile & Style</button>
         </div>
 
         <!-- Outfit Suggestions & Avatar Card -->
@@ -172,7 +186,7 @@
         
         <div class="chat-messages" id="chatMessages">
           <div class="chat-bubble bot">
-            Hello! Ask me anything about what to wear today (e.g., "Can I wear shorts today?", "Is a puffer jacket too hot?").
+            Hello! Ask me anything about what to wear today (e.g., "Can I wear a dress today?", "Is a leather jacket too hot?").
           </div>
         </div>
 
