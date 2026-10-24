@@ -1,5 +1,5 @@
 /**
- * WeatherWear - Option A: Personal Weather Dashboard
+ * WeatherWear - Personal Weather Dashboard & Style Advisor
  */
 
 const OPENWEATHER_API_KEY = "YOUR_OPENWEATHER_API_KEY";
@@ -24,7 +24,7 @@ const state = {
   }
 };
 
-// Expanded Clothing Database supporting Gender Expression filtering
+// Expanded Clothing Database supporting Gender Expression & Styles
 const clothingDatabase = {
   freezing: {
     masculine: { tops: ["Thermal Flannel", "Fleece Hoodie"], bottoms: ["Heavy Jeans", "Cargo Trousers"], outerwear: ["Heavy Down Parka"], footwear: ["Insulated Boots"], accessories: ["Beanie", "Gloves"] },
@@ -53,7 +53,7 @@ const clothingDatabase = {
   }
 };
 
-// SVG Model Color & Silhouette Coordinates
+// SVG Vector Model Palette Mapping
 const modelOutfits = {
   freezing: {
     masculine: { torso: "#1a202c", legs: "#2d3748", feet: "#4a5568", topShape: "M 24 40 L 76 40 L 70 120 L 30 120 Z" },
@@ -154,7 +154,7 @@ function updateSliderReadouts() {
     document.getElementById("heatReadout").innerText = `${heatValC}°C`;
   }
 
-  // Expression Readout Formatting (1 to 10 scale)
+  // 1 to 10 Gender Expression Readout
   let label = "Neutral";
   if (genderVal <= 3) label = `${genderVal} (Masculine)`;
   else if (genderVal <= 4) label = `${genderVal} (Slightly Masculine)`;
