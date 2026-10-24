@@ -53,13 +53,33 @@ const clothingDatabase = {
   }
 };
 
-// Avatar Emoji Layers mapping to expression scale
-const avatarLayers = {
-  freezing: { hat: "❄️", torso: "🧥", legs: "👖", feet: "🥾" },
-  cold: { hat: "🧶", torso: "🧥", legs: "👖", feet: "🥾" },
-  mild: { hat: "🧢", torso: "👔", legs: "👖", feet: "👟" },
-  warm: { hat: "🕶️", torso: "👕", legs: "🩳", feet: "👟" },
-  hot: { hat: "👒", torso: "👗", legs: "🩳", feet: "🩴" }
+// SVG Model Color & Silhouette Coordinates
+const modelOutfits = {
+  freezing: {
+    masculine: { torso: "#1a202c", legs: "#2d3748", feet: "#4a5568", topShape: "M 24 40 L 76 40 L 70 120 L 30 120 Z" },
+    neutral: { torso: "#2b6cb0", legs: "#2d3748", feet: "#1a202c", topShape: "M 26 40 L 74 40 L 68 118 L 32 118 Z" },
+    feminine: { torso: "#9b2c2c", legs: "#4a5568", feet: "#1a202c", topShape: "M 28 40 L 72 40 L 78 135 L 22 135 Z" }
+  },
+  cold: {
+    masculine: { torso: "#2c5282", legs: "#1a202c", feet: "#2d3748", topShape: "M 28 40 L 72 40 L 68 112 L 32 112 Z" },
+    neutral: { torso: "#319795", legs: "#2d3748", feet: "#1a202c", topShape: "M 28 40 L 72 40 L 66 110 L 34 110 Z" },
+    feminine: { torso: "#b83280", legs: "#1a202c", feet: "#4a5568", topShape: "M 30 40 L 70 40 L 74 125 L 26 125 Z" }
+  },
+  mild: {
+    masculine: { torso: "#dd6b20", legs: "#2d3748", feet: "#a0aec0", topShape: "M 30 40 L 70 40 L 66 105 L 34 105 Z" },
+    neutral: { torso: "#e0683b", legs: "#4a5568", feet: "#edf2f7", topShape: "M 30 40 L 70 40 L 66 105 L 34 105 Z" },
+    feminine: { torso: "#d69e2e", legs: "#2d3748", feet: "#cbd5e0", topShape: "M 32 40 L 68 40 L 72 120 L 28 120 Z" }
+  },
+  warm: {
+    masculine: { torso: "#3182ce", legs: "#718096", feet: "#edf2f7", topShape: "M 32 40 L 68 40 L 66 95 L 34 95 Z" },
+    neutral: { torso: "#31b0d5", legs: "#a0aec0", feet: "#edf2f7", topShape: "M 32 40 L 68 40 L 66 95 L 34 95 Z" },
+    feminine: { torso: "#e53e3e", legs: "#e2e8f0", feet: "#d69e2e", topShape: "M 34 40 L 66 40 L 76 115 L 24 115 Z" }
+  },
+  hot: {
+    masculine: { torso: "#e2e8f0", legs: "#cbd5e0", feet: "#dd6b20", topShape: "M 34 40 L 66 40 L 64 90 L 36 90 Z" },
+    neutral: { torso: "#edf2f7", legs: "#cbd5e0", feet: "#e0683b", topShape: "M 34 40 L 66 40 L 64 90 L 36 90 Z" },
+    feminine: { torso: "#d69e2e", legs: "#feb2b2", feet: "#dd6b20", topShape: "M 36 40 L 64 40 L 80 120 L 20 120 Z" }
+  }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -238,7 +258,6 @@ function renderDashboard() {
   const currentTier = getTemperatureTier(state.weather.tempF);
   const expressionVal = state.preferences.genderExpression;
 
-  // Determine expression key for clothing lookup
   let expressionKey = "neutral";
   if (expressionVal <= 4) expressionKey = "masculine";
   else if (expressionVal >= 7) expressionKey = "feminine";
@@ -253,11 +272,20 @@ function renderDashboard() {
 }
 
 function renderAvatar(tier, expressionKey) {
-  const layer = avatarLayers[tier] || avatarLayers.mild;
-  document.getElementById("avatarHat").innerText = layer.hat;
-  document.getElementById("avatarTorso").innerText = expressionKey === "feminine" && tier === "hot" ? "👗" : layer.torso;
-  document.getElementById("avatarLegs").innerText = expressionKey === "feminine" && (tier === "warm" || tier === "hot") ? "👗" : layer.legs;
-  document.getElementById("avatarFeet").innerText = layer.feet;
+  const outfit = (modelOutfits[tier] && modelOutfits[tier][expressionKey]) || modelOutfits.mild.neutral;
+
+  const torsoEl = document.getElementById("modelTorso");
+  const legsEl = document.getElementById("modelLegs");
+  const footLeft = document.getElementById("modelFootLeft");
+  const footRight = document.getElementById("modelFootRight");
+
+  if (torsoEl) {
+    torsoEl.setAttribute("fill", outfit.torso);
+    torsoEl.setAttribute("d", outfit.topShape);
+  }
+  if (legsEl) legsEl.setAttribute("fill", outfit.legs);
+  if (footLeft) footLeft.setAttribute("fill", outfit.feet);
+  if (footRight) footRight.setAttribute("fill", outfit.feet);
 }
 
 function renderTags(elementId, itemsArray) {
