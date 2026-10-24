@@ -10,7 +10,7 @@ const state = {
   preferences: {
     coldThreshold: 50,
     heatThreshold: 80,
-    genderExpression: 5, // 1 (Masculine) to 10 (Feminine)
+    genderExpression: 5,
     preferredStyles: ["casual"]
   },
   weather: {
@@ -24,7 +24,6 @@ const state = {
   }
 };
 
-// Expanded Clothing Database supporting Gender Expression & Styles
 const clothingDatabase = {
   freezing: {
     masculine: { tops: ["Thermal Flannel", "Fleece Hoodie"], bottoms: ["Heavy Jeans", "Cargo Trousers"], outerwear: ["Heavy Down Parka"], footwear: ["Insulated Boots"], accessories: ["Beanie", "Gloves"] },
@@ -53,7 +52,6 @@ const clothingDatabase = {
   }
 };
 
-// SVG Vector Model Palette Mapping
 const modelOutfits = {
   freezing: {
     masculine: { torso: "#1a202c", legs: "#2d3748", feet: "#4a5568", topShape: "M 24 40 L 76 40 L 70 120 L 30 120 Z" },
@@ -112,14 +110,14 @@ function setupEventListeners() {
   });
 
   document.getElementById("reconfigureBtn")?.addEventListener("click", () => {
-    document.getElementById("dashboardSection").classList.add("hidden");
-    document.getElementById("onboardingSection").classList.remove("hidden");
-    document.getElementById("stepIndicator").classList.remove("hidden");
+    document.getElementById("dashboardSection")?.classList.add("hidden");
+    document.getElementById("onboardingSection")?.classList.remove("hidden");
+    document.getElementById("stepIndicator")?.classList.remove("hidden");
     switchStep(1);
   });
 
   document.getElementById("searchBtn")?.addEventListener("click", async () => {
-    const city = document.getElementById("cityInput").value.trim();
+    const city = document.getElementById("cityInput")?.value.trim();
     if (city) {
       await fetchOpenWeatherData(city);
       renderDashboard();
@@ -162,7 +160,6 @@ function updateSliderReadouts() {
     if (heatReadout) heatReadout.innerText = `${heatValC}°C`;
   }
 
-  // 1 to 10 Gender Expression Readout
   let label = "Neutral";
   if (genderVal <= 3) label = `${genderVal} (Masculine)`;
   else if (genderVal <= 4) label = `${genderVal} (Slightly Masculine)`;
