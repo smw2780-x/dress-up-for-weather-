@@ -471,3 +471,27 @@ input[type="range"] {
   font-weight: 600;
   margin-bottom: 6px;
 }
+/* ==========================================
+   PAPER-DOLL AVATAR STYLES
+   ========================================== */
+.paper-doll-container {
+  position: relative;
+  width: 140px;
+  height: 240px;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatar-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
