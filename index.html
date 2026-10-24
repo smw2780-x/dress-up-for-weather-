@@ -213,3 +213,90 @@
                 <!-- Head & Hair -->
                 <g id="avatarHead" filter="url(#avatarShadow)">
                   <path id="avatarHair" d="M 42 12 Q 60 2 78 12 Q 82 25 78 30 Q 60 22 42 30 Z" fill="#2d3748" />
+                  <circle cx="60" cy="24" r="14" fill="#f6ad55" />
+                  <circle cx="55" cy="22" r="1.5" fill="#2d3748" />
+                  <circle cx="65" cy="22" r="1.5" fill="#2d3748" />
+                  <path d="M 56 28 Q 60 31 64 28" stroke="#2d3748" stroke-width="1.2" fill="none" stroke-linecap="round" />
+                  <rect x="56" y="37" width="8" height="8" fill="#e2e8f0" />
+                </g>
+
+                <!-- Outerwear (Jacket/Coat Layer) -->
+                <path id="avatarJacket" d="M 34 44 L 86 44 L 84 110 L 76 110 L 74 58 L 46 58 L 44 110 L 36 110 Z" fill="#2b6cb0" filter="url(#avatarShadow)" class="hidden" />
+
+                <!-- Torso Base Top -->
+                <path id="avatarTorso" d="M 38 45 L 82 45 Q 84 75 80 105 L 40 105 Q 36 75 38 45 Z" fill="#dd6b20" filter="url(#avatarShadow)" />
+
+                <!-- Arms & Sleeves -->
+                <g id="avatarArms">
+                  <rect id="armLeft" x="26" y="46" width="10" height="58" rx="5" fill="#f6ad55" />
+                  <rect id="armRight" x="84" y="46" width="10" height="58" rx="5" fill="#f6ad55" />
+                  <rect id="sleeveLeft" x="25" y="45" width="12" height="25" rx="4" fill="#dd6b20" />
+                  <rect id="sleeveRight" x="83" y="45" width="12" height="25" rx="4" fill="#dd6b20" />
+                </g>
+
+                <!-- Bottoms & Legs -->
+                <g id="avatarLegs" filter="url(#avatarShadow)">
+                  <path id="pantsFull" d="M 40 104 L 58 104 L 56 190 L 40 190 Z M 62 104 L 80 104 L 80 190 L 64 190 Z" fill="#2d3748" />
+                  <path id="pantsShorts" d="M 40 104 L 58 104 L 56 142 L 40 142 Z M 62 104 L 80 104 L 80 142 L 64 142 Z" fill="#4a5568" class="hidden" />
+                  <rect id="legsBare" x="42" y="142" width="12" height="48" fill="#f6ad55" class="hidden" />
+                  <rect id="legsBareRight" x="66" y="142" width="12" height="48" fill="#f6ad55" class="hidden" />
+                </g>
+
+                <!-- Footwear -->
+                <g id="avatarShoes" filter="url(#avatarShadow)">
+                  <path id="shoeLeft" d="M 36 188 Q 36 184 42 184 L 57 184 Q 58 190 58 196 L 36 196 Z" fill="#1a202c" />
+                  <path id="shoeRight" d="M 63 184 L 78 184 Q 84 184 84 188 L 84 196 L 62 196 Z" fill="#1a202c" />
+                </g>
+
+                <!-- Beanie/Hat -->
+                <path id="avatarHat" d="M 40 20 Q 60 4 80 20 L 82 26 L 38 26 Z" fill="#c53030" class="hidden" />
+              </svg>
+            </div>
+
+            <!-- Recommendation Tags -->
+            <div style="flex: 1; min-width: 200px;">
+              <div class="outfit-category">
+                <h4>Tops & Outerwear</h4>
+                <div class="tags" id="topRecommendations">
+                  <span class="tag">Light Sweater</span>
+                </div>
+              </div>
+              <div class="outfit-category">
+                <h4>Bottoms</h4>
+                <div class="tags" id="bottomRecommendations">
+                  <span class="tag">Jeans</span>
+                </div>
+              </div>
+              <div class="outfit-category">
+                <h4>Footwear & Weather Gear</h4>
+                <div class="tags" id="gearRecommendations">
+                  <span class="tag">Sneakers</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Advisor -->
+      <section class="card chat-container">
+        <h3>Outfit Advisor Chat 💬</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">
+          Ask if a specific item or style works for today's weather!
+        </p>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-bubble bot">
+            Hello! Ask me anything about what to wear today (e.g., "Can I wear shorts today?", "Is a leather jacket too warm?").
+          </div>
+        </div>
+        <form id="chatForm" class="chat-input-form">
+          <input type="text" id="chatInput" placeholder="Ask about an outfit item..." required>
+          <button type="submit" class="btn-primary" style="width: auto;">Send</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
