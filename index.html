@@ -141,18 +141,32 @@
           <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Profile & Style</button>
         </div>
 
-        <!-- Outfit Suggestions & Avatar Card -->
+        <!-- Outfit Suggestions & Realistic Silhouette Card -->
         <div class="card outfit-card-wrapper">
           <div class="avatar-and-outfit-container">
-            <!-- Dynamic Avatar Box -->
+            <!-- Realistic Model Preview Box -->
             <div class="avatar-box">
-              <h4>Outfit Preview</h4>
-              <div class="bitmoji-avatar" id="avatarDisplay">
-                <div class="avatar-part hat" id="avatarHat">🧢</div>
-                <div class="avatar-part head">😶</div>
-                <div class="avatar-part torso" id="avatarTorso">👕</div>
-                <div class="avatar-part legs" id="avatarLegs">👖</div>
-                <div class="avatar-part feet" id="avatarFeet">👟</div>
+              <h4>Outfit Silhouette</h4>
+              <div class="model-avatar-container" id="modelAvatarDisplay">
+                <svg class="human-silhouette" viewBox="0 0 100 220" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Head & Neck -->
+                  <circle cx="50" cy="22" r="12" fill="#d4a373" />
+                  <rect x="47" y="32" width="6" height="8" fill="#c68b59" />
+                  
+                  <!-- Torso / Apparel Layer -->
+                  <path id="modelTorso" d="M 30 40 L 70 40 L 66 110 L 34 110 Z" fill="#e0683b" />
+                  
+                  <!-- Arms -->
+                  <rect x="20" y="42" width="8" height="55" rx="4" fill="#d4a373" />
+                  <rect x="72" y="42" width="8" height="55" rx="4" fill="#d4a373" />
+
+                  <!-- Legs / Pants Layer -->
+                  <path id="modelLegs" d="M 34 110 L 48 110 L 46 190 L 32 190 Z M 52 110 L 66 110 L 68 190 L 54 190 Z" fill="#2d3748" />
+
+                  <!-- Footwear Layer -->
+                  <rect id="modelFootLeft" x="30" y="190" width="16" height="8" rx="2" fill="#1a202c" />
+                  <rect id="modelFootRight" x="54" y="190" width="16" height="8" rx="2" fill="#1a202c" />
+                </svg>
               </div>
             </div>
 
