@@ -10,6 +10,7 @@ const state = {
   preferences: {
     coldThreshold: 50,
     heatThreshold: 80,
+    genderExpression: 5, // 1 (Masculine) to 10 (Feminine)
     preferredStyles: ["casual"]
   },
   weather: {
@@ -23,41 +24,42 @@ const state = {
   }
 };
 
+// Expanded Clothing Database supporting Gender Expression filtering
 const clothingDatabase = {
   freezing: {
-    casual: { tops: ["Thermal Shirt", "Fleece Hoodie"], bottoms: ["Thermal Jeans"], outerwear: ["Heavy Down Parka"], footwear: ["Insulated Boots"], accessories: ["Beanie", "Gloves"] },
-    formal: { tops: ["Thermal Dress Shirt"], bottoms: ["Heavy Wool Trousers"], outerwear: ["Wool Overcoat"], footwear: ["Lined Leather Boots"], accessories: ["Gloves"] },
-    athletic: { tops: ["Thermal Compression Top"], bottoms: ["Thermal Running Tights"], outerwear: ["Insulated Jacket"], footwear: ["Trail Running Shoes"], accessories: ["Headband"] }
+    masculine: { tops: ["Thermal Flannel", "Fleece Hoodie"], bottoms: ["Heavy Jeans", "Cargo Trousers"], outerwear: ["Heavy Down Parka"], footwear: ["Insulated Boots"], accessories: ["Beanie", "Gloves"] },
+    neutral: { tops: ["Thermal Shirt", "Fleece Hoodie"], bottoms: ["Thermal Pants"], outerwear: ["Winter Parka"], footwear: ["Insulated Boots"], accessories: ["Warm Scarf", "Beanie"] },
+    feminine: { tops: ["Knit Sweater", "Thermal Blouse"], bottoms: ["Fleece Leggings", "Warm Trousers"], outerwear: ["Wool Long Coat", "Puffer Coat"], footwear: ["Lined Ankle Boots"], accessories: ["Soft Scarf", "Earmuffs"] }
   },
   cold: {
-    casual: { tops: ["Long Sleeve Henley"], bottoms: ["Jeans"], outerwear: ["Puffer Jacket"], footwear: ["Boots"], accessories: ["Knit Beanie"] },
-    formal: { tops: ["Dress Shirt"], bottoms: ["Wool Trousers"], outerwear: ["Trench Coat"], footwear: ["Chelsea Boots"], accessories: ["Scarf"] },
-    athletic: { tops: ["Long Sleeve Tech Shirt"], bottoms: ["Fleece Joggers"], outerwear: ["Windbreaker"], footwear: ["Running Shoes"], accessories: ["Light Gloves"] }
+    masculine: { tops: ["Long Sleeve Henley", "Knit Crewneck"], bottoms: ["Chinos", "Jeans"], outerwear: ["Puffer Jacket", "Denim Jacket"], footwear: ["Leather Boots"], accessories: ["Knit Beanie"] },
+    neutral: { tops: ["Long Sleeve Tee", "Sweater"], bottoms: ["Jeans", "Joggers"], outerwear: ["Puffer Jacket"], footwear: ["Sneakers", "Boots"], accessories: ["Beanie"] },
+    feminine: { tops: ["Cardigan", "Long Sleeve Blouse"], bottoms: ["High-Waisted Jeans", "Leggings"], outerwear: ["Tailored Trench Coat"], footwear: ["Heeled Boots", "Ankle Boots"], accessories: ["Knit Scarf"] }
   },
   mild: {
-    casual: { tops: ["Cotton T-Shirt"], bottoms: ["Jeans"], outerwear: ["Light Cardigan"], footwear: ["Sneakers"], accessories: ["Baseball Cap"] },
-    formal: { tops: ["Button-Down Shirt"], bottoms: ["Tailored Trousers"], outerwear: ["Blazer"], footwear: ["Loafers"], accessories: ["Watch"] },
-    athletic: { tops: ["Short Sleeve Tee"], bottoms: ["Track Pants"], outerwear: ["Track Jacket"], footwear: ["Running Sneakers"], accessories: ["Sweatband"] }
+    masculine: { tops: ["Polo Shirt", "Button-Down"], bottoms: ["Chinos", "Denim"], outerwear: ["Bomber Jacket", "Blazer"], footwear: ["Loafers", "Sneakers"], accessories: ["Watch"] },
+    neutral: { tops: ["Cotton T-Shirt"], bottoms: ["Jeans"], outerwear: ["Light Denim Jacket"], footwear: ["Sneakers"], accessories: ["Cap"] },
+    feminine: { tops: ["Fitted Top", "Light Blouse"], bottoms: ["Midi Skirt", "Straight Jeans"], outerwear: ["Light Cardigan", "Denim Jacket"], footwear: ["Flats", "Sneakers"], accessories: ["Jewelry"] }
   },
   warm: {
-    casual: { tops: ["Graphic T-Shirt"], bottoms: ["Chino Shorts"], outerwear: [], footwear: ["Canvas Sneakers"], accessories: ["Sunglasses"] },
-    formal: { tops: ["Linen Shirt"], bottoms: ["Linen Trousers"], outerwear: [], footwear: ["Suede Loafers"], accessories: ["Pocket Square"] },
-    athletic: { tops: ["Breathable Tank Top"], bottoms: ["Running Shorts"], outerwear: [], footwear: ["Lightweight Trainers"], accessories: ["Visor"] }
+    masculine: { tops: ["Short Sleeve Polo", "Graphic Tee"], bottoms: ["Chino Shorts"], outerwear: [], footwear: ["Canvas Sneakers"], accessories: ["Sunglasses"] },
+    neutral: { tops: ["Short Sleeve Tee"], bottoms: ["Shorts"], outerwear: [], footwear: ["Canvas Shoes"], accessories: ["Sunglasses"] },
+    feminine: { tops: ["Sleeveless Top", "Blouse"], bottoms: ["Shorts", "A-Line Skirt"], outerwear: [], footwear: ["Sandals", "Flats"], accessories: ["Sunglasses", "Sun Hat"] }
   },
   hot: {
-    casual: { tops: ["Tank Top"], bottoms: ["Athletic Shorts"], outerwear: [], footwear: ["Sandals"], accessories: ["Sun Hat", "Sunglasses"] },
-    formal: { tops: ["Short Sleeve Linen Shirt"], bottoms: ["Tropical Trousers"], outerwear: [], footwear: ["Unlined Loafers"], accessories: ["Hat"] },
-    athletic: { tops: ["Ultra-Light Tank"], bottoms: ["Mesh Shorts"], outerwear: [], footwear: ["Breathable Runners"], accessories: ["Hydration Belt"] }
+    masculine: { tops: ["Linen Shirt", "Tank Top"], bottoms: ["Athletic Shorts"], outerwear: [], footwear: ["Sandals", "Boat Shoes"], accessories: ["Cap"] },
+    neutral: { tops: ["Tank Top"], bottoms: ["Light Shorts"], outerwear: [], footwear: ["Sandals"], accessories: ["Sunglasses"] },
+    feminine: { tops: ["Sundress", "Linen Crop Top"], bottoms: ["Flowy Skirt", "Linen Shorts"], outerwear: [], footwear: ["Strappy Sandals", "Espadrilles"], accessories: ["Wide-Brim Sun Hat"] }
   }
 };
 
-// Avatar Emoji Layers for "Bitmoji" visual representation
+// Avatar Emoji Layers mapping to expression scale
 const avatarLayers = {
-  freezing: { hat: "⛷️", torso: "🧥", legs: "👖", feet: "🥾" },
+  freezing: { hat: "❄️", torso: "🧥", legs: "👖", feet: "🥾" },
   cold: { hat: "🧶", torso: "🧥", legs: "👖", feet: "🥾" },
   mild: { hat: "🧢", torso: "👔", legs: "👖", feet: "👟" },
   warm: { hat: "🕶️", torso: "👕", legs: "🩳", feet: "👟" },
-  hot: { hat: "👒", torso: "🎽", legs: "🩳", feet: "🩴" }
+  hot: { hat: "👒", torso: "👗", legs: "🩳", feet: "🩴" }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -67,18 +69,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function setupEventListeners() {
-  // Slider Real-time Number Updates
   const coldScale = document.getElementById("coldScale");
   const heatScale = document.getElementById("heatScale");
+  const genderScale = document.getElementById("genderScale");
 
-  if (coldScale) {
-    coldScale.addEventListener("input", updateSliderReadouts);
-  }
-  if (heatScale) {
-    heatScale.addEventListener("input", updateSliderReadouts);
-  }
+  if (coldScale) coldScale.addEventListener("input", updateSliderReadouts);
+  if (heatScale) heatScale.addEventListener("input", updateSliderReadouts);
+  if (genderScale) genderScale.addEventListener("input", updateSliderReadouts);
 
-  // Navigation
   document.getElementById("goToStep2Btn")?.addEventListener("click", () => {
     saveStep1Preferences();
     switchStep(2);
@@ -124,6 +122,7 @@ function setupEventListeners() {
 function updateSliderReadouts() {
   const coldValF = parseInt(document.getElementById("coldScale").value, 10);
   const heatValF = parseInt(document.getElementById("heatScale").value, 10);
+  const genderVal = parseInt(document.getElementById("genderScale").value, 10);
 
   if (state.unit === "F") {
     document.getElementById("coldReadout").innerText = `${coldValF}°F`;
@@ -134,11 +133,22 @@ function updateSliderReadouts() {
     document.getElementById("coldReadout").innerText = `${coldValC}°C`;
     document.getElementById("heatReadout").innerText = `${heatValC}°C`;
   }
+
+  // Expression Readout Formatting (1 to 10 scale)
+  let label = "Neutral";
+  if (genderVal <= 3) label = `${genderVal} (Masculine)`;
+  else if (genderVal <= 4) label = `${genderVal} (Slightly Masculine)`;
+  else if (genderVal <= 6) label = `${genderVal} (Neutral)`;
+  else if (genderVal <= 8) label = `${genderVal} (Slightly Feminine)`;
+  else label = `${genderVal} (Feminine)`;
+
+  document.getElementById("genderReadout").innerText = label;
 }
 
 function saveStep1Preferences() {
   state.preferences.coldThreshold = parseInt(document.getElementById("coldScale").value, 10);
   state.preferences.heatThreshold = parseInt(document.getElementById("heatScale").value, 10);
+  state.preferences.genderExpression = parseInt(document.getElementById("genderScale").value, 10);
 
   const selectedStyles = Array.from(
     document.querySelectorAll('input[name="preferredStyle"]:checked')
@@ -226,37 +236,27 @@ function renderDashboard() {
   document.getElementById("windVal").innerText = state.weather.windSpeed;
 
   const currentTier = getTemperatureTier(state.weather.tempF);
-  
-  // Render Avatar preview matching current temperature tier
-  renderAvatar(currentTier);
+  const expressionVal = state.preferences.genderExpression;
 
-  const activeStyles = state.preferences.preferredStyles;
-  let combinedTops = [];
-  let combinedBottoms = [];
-  let combinedFootwear = [];
-  let combinedAccessories = [];
+  // Determine expression key for clothing lookup
+  let expressionKey = "neutral";
+  if (expressionVal <= 4) expressionKey = "masculine";
+  else if (expressionVal >= 7) expressionKey = "feminine";
 
-  activeStyles.forEach((styleKey) => {
-    const outfit = clothingDatabase[currentTier][styleKey];
-    if (outfit) {
-      if (outfit.tops) combinedTops.push(...outfit.tops);
-      if (outfit.outerwear) combinedTops.push(...outfit.outerwear);
-      if (outfit.bottoms) combinedBottoms.push(...outfit.bottoms);
-      if (outfit.footwear) combinedFootwear.push(...outfit.footwear);
-      if (outfit.accessories) combinedAccessories.push(...outfit.accessories);
-    }
-  });
+  renderAvatar(currentTier, expressionKey);
 
-  renderTags("topRecommendations", [...new Set(combinedTops)]);
-  renderTags("bottomRecommendations", [...new Set(combinedBottoms)]);
-  renderTags("gearRecommendations", [...new Set([...combinedFootwear, ...combinedAccessories])]);
+  const outfit = clothingDatabase[currentTier][expressionKey] || clothingDatabase[currentTier].neutral;
+
+  renderTags("topRecommendations", outfit.tops || []);
+  renderTags("bottomRecommendations", outfit.bottoms || []);
+  renderTags("gearRecommendations", [...(outfit.footwear || []), ...(outfit.accessories || []), ...(outfit.outerwear || [])]);
 }
 
-function renderAvatar(tier) {
+function renderAvatar(tier, expressionKey) {
   const layer = avatarLayers[tier] || avatarLayers.mild;
   document.getElementById("avatarHat").innerText = layer.hat;
-  document.getElementById("avatarTorso").innerText = layer.torso;
-  document.getElementById("avatarLegs").innerText = layer.legs;
+  document.getElementById("avatarTorso").innerText = expressionKey === "feminine" && tier === "hot" ? "👗" : layer.torso;
+  document.getElementById("avatarLegs").innerText = expressionKey === "feminine" && (tier === "warm" || tier === "hot") ? "👗" : layer.legs;
   document.getElementById("avatarFeet").innerText = layer.feet;
 }
 
@@ -303,6 +303,12 @@ function generateBotReply(query) {
   const q = query.toLowerCase();
   const tempF = state.weather.tempF;
 
+  if (q.includes("dress") || q.includes("skirt")) {
+    return tempF >= state.preferences.heatThreshold - 10
+      ? `A dress or skirt is a great option for today's ${tempF}°F weather!`
+      : `It might feel chilly in a light dress today at ${tempF}°F. Consider tights or a long coat.`;
+  }
+
   if (q.includes("short") || q.includes("shorts")) {
     return tempF >= state.preferences.heatThreshold - 5
       ? `Shorts are ideal for today's ${tempF}°F weather!`
@@ -312,8 +318,8 @@ function generateBotReply(query) {
   if (q.includes("jacket") || q.includes("coat")) {
     return tempF <= state.preferences.coldThreshold
       ? `Yes, an outerwear layer is recommended for ${tempF}°F weather.`
-      : `A jacket may be too warm for today's temperature (${tempF}°F).`;
+      : `A heavy jacket may be too warm for today's temperature (${tempF}°F).`;
   }
 
-  return `For today's weather in ${state.weather.city} (${tempF}°F, ${state.weather.condition}), stick with your selected style layerings.`;
+  return `For today's weather in ${state.weather.city} (${tempF}°F, ${state.weather.condition}), stick with your tailored style profile.`;
 }
