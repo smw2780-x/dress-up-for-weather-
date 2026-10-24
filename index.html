@@ -1,35 +1,222 @@
-<!-- Outfit Suggestions & Realistic Silhouette Card -->
-<div class="card outfit-card-wrapper">
-  <div class="avatar-and-outfit-container">
-    <!-- Realistic Model Preview Box -->
-    <div class="avatar-box">
-      <h4>Outfit Silhouette</h4>
-      <div class="model-avatar-container" id="modelAvatarDisplay">
-        <svg class="human-silhouette" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-          <!-- Head & Neck -->
-          <circle cx="50" cy="22" r="12" fill="#d4a373" />
-          <rect x="47" y="32" width="6" height="8" fill="#c68b59" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeatherWear - Smart Outfit Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-          <!-- Optional Hat / Headgear Layer -->
-          <path id="modelHat" d="M 35 18 Q 50 8 65 18 L 72 20 L 30 20 Z" fill="transparent" />
+  <div class="app-container">
+    <header>
+      <div class="logo">🌤️ WeatherWear</div>
+      <button class="unit-toggle-btn" id="unitToggle">Unit: °F</button>
+    </header>
 
-          <!-- Torso / Apparel Layer -->
-          <path id="modelTorso" d="M 30 40 L 70 40 L 66 110 L 34 110 Z" fill="#e0683b" />
-
-          <!-- Arms -->
-          <rect x="20" y="42" width="8" height="55" rx="4" fill="#d4a373" />
-          <rect x="72" y="42" width="8" height="55" rx="4" fill="#d4a373" />
-
-          <!-- Legs / Pants Layer -->
-          <path id="modelLegs" d="M 34 110 L 48 110 L 46 185 L 32 185 Z M 52 110 L 66 110 L 68 185 L 54 185 Z" fill="#2d3748" />
-
-          <!-- Footwear Layer -->
-          <g id="modelFootwear">
-            <rect id="modelFootLeft" x="30" y="185" width="16" height="8" rx="2" fill="#1a202c" />
-            <rect id="modelFootRight" x="54" y="185" width="16" height="8" rx="2" fill="#1a202c" />
-          </g>
-        </svg>
+    <!-- STEP PROGRESS INDICATOR -->
+    <div id="stepIndicator" class="step-indicator-container">
+      <div class="step-badge active" id="badgeStep1">
+        <span class="step-number">1</span> Preferences
+      </div>
+      <div class="step-line"></div>
+      <div class="step-badge" id="badgeStep2">
+        <span class="step-number">2</span> Weather Setup
       </div>
     </div>
+
+    <!-- ONBOARDING FLOW -->
+    <section id="onboardingSection" class="card">
+      
+      <!-- STEP 1: USER PREFERENCES -->
+      <div id="step1Content">
+        <h2>Step 1: Customize Your Thermal & Style Profile</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Adjust exact temperature thresholds and your preferred style aesthetic.</p>
+
+        <form id="preferencesForm">
+          <!-- Cold Sensitivity -->
+          <div class="survey-group">
+            <div class="label-with-value">
+              <label for="coldScale">When do you start feeling COLD?</label>
+              <span class="temp-readout" id="coldReadout">50°F</span>
+            </div>
+            <input type="range" id="coldScale" min="30" max="70" value="50">
+            <div class="scale-labels">
+              <span>30°F (High Tolerance)</span>
+              <span>50°F (Average)</span>
+              <span>70°F (Low Tolerance)</span>
+            </div>
+          </div>
+
+          <!-- Heat Sensitivity -->
+          <div class="survey-group">
+            <div class="label-with-value">
+              <label for="heatScale">When do you start feeling HOT?</label>
+              <span class="temp-readout" id="heatReadout">80°F</span>
+            </div>
+            <input type="range" id="heatScale" min="65" max="95" value="80">
+            <div class="scale-labels">
+              <span>65°F (Low Tolerance)</span>
+              <span>80°F (Average)</span>
+              <span>95°F (High Tolerance)</span>
+            </div>
+          </div>
+
+          <!-- Feminine vs Masculine Style Spectrum (1 to 10) -->
+          <div class="survey-group">
+            <div class="label-with-value">
+              <label for="genderScale">Style Expression Spectrum:</label>
+              <span class="temp-readout" id="genderReadout">5 (Neutral)</span>
+            </div>
+            <input type="range" id="genderScale" min="1" max="10" value="5" step="1">
+            <div class="scale-labels">
+              <span>1 (Masculine)</span>
+              <span>5 (Neutral)</span>
+              <span>10 (Feminine)</span>
+            </div>
+          </div>
+
+          <!-- Preferred Styles -->
+          <div class="survey-group">
+            <label>Preferred Outfit Categories (Select all that apply):</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="casual" checked> Casual
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="formal"> Formal
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="preferredStyle" value="athletic"> Athletic
+              </label>
+            </div>
+          </div>
+
+          <button type="button" id="goToStep2Btn" class="btn-primary">Next: Weather Setup →</button>
+        </form>
+      </div>
+
+      <!-- STEP 2: WEATHER SETUP -->
+      <div id="step2Content" class="hidden">
+        <h2>Step 2: Check Today's Weather</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Enter your location to pull real-time condition data from OpenWeather.</p>
+
+        <div class="survey-group">
+          <label for="initialCityInput">Enter Your City or Zip Code:</label>
+          <div class="search-bar">
+            <input type="text" id="initialCityInput" placeholder="e.g., New York, London, Tokyo..." value="New York">
+          </div>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" id="backToStep1Btn" class="btn-secondary">← Back to Preferences</button>
+          <button type="button" id="finishOnboardingBtn" class="btn-primary">Fetch Forecast & See Outfits</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- MAIN DASHBOARD -->
+    <main id="dashboardSection" class="hidden">
+      
+      <!-- Location Search Bar -->
+      <div class="search-bar">
+        <input type="text" id="cityInput" placeholder="Change city..." value="New York">
+        <button id="searchBtn" class="btn-primary">Update Weather</button>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Weather Summary Card -->
+        <div class="card weather-info">
+          <div class="weather-header-row">
+            <h3 id="locationName">New York, US</h3>
+            <span class="weather-badge" id="weatherConditionBadge">Sunny</span>
+          </div>
+          <div class="temp-display" id="tempDisplay">68°F</div>
+          <p id="conditionText" style="font-weight: 600; text-transform: capitalize;">Partly Cloudy</p>
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 12px 0;">
+          <p style="font-size: 0.9rem; color: var(--text-muted);">
+            Humidity: <span id="humidityVal">55%</span> | Wind: <span id="windVal">10 mph</span>
+          </p>
+          <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary-color); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Profile & Style</button>
+        </div>
+
+        <!-- Outfit Suggestions & Realistic Silhouette Card -->
+        <div class="card outfit-card-wrapper">
+          <div class="avatar-and-outfit-container">
+            <!-- Realistic Model Preview Box -->
+            <div class="avatar-box">
+              <h4>Outfit Silhouette</h4>
+              <div class="model-avatar-container" id="modelAvatarDisplay">
+                <svg class="human-silhouette" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Head & Neck -->
+                  <circle cx="50" cy="22" r="12" fill="#d4a373" />
+                  <rect x="47" y="32" width="6" height="8" fill="#c68b59" />
+                  
+                  <!-- Optional Hat Layer -->
+                  <path id="modelHat" d="M 35 18 Q 50 8 65 18 L 72 20 L 30 20 Z" fill="transparent" />
+
+                  <!-- Torso / Apparel Layer -->
+                  <path id="modelTorso" d="M 30 40 L 70 40 L 66 110 L 34 110 Z" fill="#e0683b" />
+                  
+                  <!-- Arms -->
+                  <rect x="20" y="42" width="8" height="55" rx="4" fill="#d4a373" />
+                  <rect x="72" y="42" width="8" height="55" rx="4" fill="#d4a373" />
+
+                  <!-- Legs / Pants Layer -->
+                  <path id="modelLegs" d="M 34 110 L 48 110 L 46 185 L 32 185 Z M 52 110 L 66 110 L 68 185 L 54 185 Z" fill="#2d3748" />
+
+                  <!-- Footwear Layer -->
+                  <g id="modelFootwear">
+                    <rect id="modelFootLeft" x="30" y="185" width="16" height="8" rx="2" fill="#1a202c" />
+                    <rect id="modelFootRight" x="54" y="185" width="16" height="8" rx="2" fill="#1a202c" />
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Tags Section -->
+            <div class="outfit-details">
+              <h3>Today's Recommended Gear</h3>
+
+              <div class="outfit-category">
+                <h4>Tops & Outerwear</h4>
+                <div class="tags" id="topRecommendations"></div>
+              </div>
+
+              <div class="outfit-category">
+                <h4>Bottoms</h4>
+                <div class="tags" id="bottomRecommendations"></div>
+              </div>
+
+              <div class="outfit-category">
+                <h4>Footwear & Weather Gear</h4>
+                <div class="tags" id="gearRecommendations"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAT ASSISTANT -->
+      <section class="card chat-container">
+        <h3>Outfit Advisor Chat 💬</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">Ask if a specific item works for today's weather!</p>
+        
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-bubble bot">
+            Hello! Ask me anything about what to wear today (e.g., "Can I wear a dress today?", "Is a leather jacket too hot?").
+          </div>
+        </div>
+
+        <form id="chatForm" class="chat-input-form">
+          <input type="text" id="chatInput" placeholder="Ask about an outfit item..." required>
+          <button type="submit" class="btn-primary" style="width: auto;">Send</button>
+        </form>
+      </section>
+    </main>
   </div>
-</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
