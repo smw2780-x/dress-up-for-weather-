@@ -30,21 +30,13 @@
       <div id="step1Content">
         <h2>Step 1: Customize Your Preferences</h2>
         <p style="color: var(--text-muted); margin-bottom: 20px;">
-          Help us understand your temperature tolerance and style choices.
+          Help us understand your thermal sensitivity and wardrobe preferences across all clothing categories.
         </p>
-
         <form id="preferencesForm">
-          <!-- Cold Sensitivity with Live Value -->
+          <!-- Cold Sensitivity -->
           <div class="survey-group">
             <label for="coldScale">When do you start feeling COLD?</label>
-            <input 
-              type="range" 
-              id="coldScale" 
-              min="30" 
-              max="70" 
-              value="50"
-              oninput="document.getElementById('coldTempVal').innerText = this.value + '°F'"
-            >
+            <input type="range" id="coldScale" min="30" max="70" value="50" oninput="document.getElementById('coldTempVal').innerText = this.value + '°F'">
             <div style="text-align: center; font-weight: bold; margin-top: 6px; color: var(--primary-color, #3b82f6);">
               Selected Threshold: <span id="coldTempVal">50°F</span>
             </div>
@@ -55,17 +47,10 @@
             </div>
           </div>
 
-          <!-- Heat Sensitivity with Live Value -->
+          <!-- Heat Sensitivity -->
           <div class="survey-group">
             <label for="heatScale">When do you start feeling HOT?</label>
-            <input 
-              type="range" 
-              id="heatScale" 
-              min="65" 
-              max="95" 
-              value="80"
-              oninput="document.getElementById('heatTempVal').innerText = this.value + '°F'"
-            >
+            <input type="range" id="heatScale" min="65" max="95" value="80" oninput="document.getElementById('heatTempVal').innerText = this.value + '°F'">
             <div style="text-align: center; font-weight: bold; margin-top: 6px; color: var(--primary-color, #3b82f6);">
               Selected Threshold: <span id="heatTempVal">80°F</span>
             </div>
@@ -76,62 +61,73 @@
             </div>
           </div>
 
-          <!-- Style Selection (Checkboxes for Casual, Formal, Athletic) -->
+          <!-- Overall Clothing Styles -->
           <div class="survey-group">
-            <label>Default Outfit Styles (Select all that apply):</label>
+            <label>Preferred Clothing Styles (Select all that apply):</label>
             <div class="checkbox-grid">
-              <label class="checkbox-label">
-                <input type="checkbox" name="preferredStyle" value="casual" checked> Casual
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="preferredStyle" value="formal"> Formal
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="preferredStyle" value="athletic"> Athletic
-              </label>
+              <label class="checkbox-label"><input type="checkbox" name="preferredStyle" value="casual" checked> Casual</label>
+              <label class="checkbox-label"><input type="checkbox" name="preferredStyle" value="formal"> Formal / Business</label>
+              <label class="checkbox-label"><input type="checkbox" name="preferredStyle" value="athletic"> Athletic / Sporty</label>
+              <label class="checkbox-label"><input type="checkbox" name="preferredStyle" value="streetwear"> Streetwear</label>
+              <label class="checkbox-label"><input type="checkbox" name="preferredStyle" value="cozy"> Cozy / Lounge</label>
             </div>
           </div>
 
-          <!-- Feminine / Masculine Style Scale (1 to 10) -->
+          <!-- Tops Preferences -->
           <div class="survey-group">
-            <label for="genderStyleScale">Style Presentation / Expression:</label>
-            <input 
-              type="range" 
-              id="genderStyleScale" 
-              min="1" 
-              max="10" 
-              value="5" 
-              oninput="document.getElementById('genderStyleVal').innerText = this.value"
-            >
-            <div style="text-align: center; font-weight: bold; margin-top: 6px; color: var(--primary-color, #3b82f6);">
-              Selected Score: <span id="genderStyleVal">5</span> / 10
-            </div>
-            <div class="scale-labels">
-              <span>1 (Feminine)</span>
-              <span>5 (Neutral)</span>
-              <span>10 (Masculine)</span>
+            <label>Tops & Shirts Categories in Your Closet:</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label"><input type="checkbox" name="topsStyle" value="T-shirt" checked> T-Shirts</label>
+              <label class="checkbox-label"><input type="checkbox" name="topsStyle" value="Tank top"> Tank Tops</label>
+              <label class="checkbox-label"><input type="checkbox" name="topsStyle" value="Button-up / Polo" checked> Button-ups / Polos</label>
+              <label class="checkbox-label"><input type="checkbox" name="topsStyle" value="Long Sleeve T-Shirt" checked> Long Sleeve Shirts</label>
+              <label class="checkbox-label"><input type="checkbox" name="topsStyle" value="Blouse / Dress Shirt"> Blouses / Dress Shirts</label>
             </div>
           </div>
 
-          <!-- Hot Weather Items -->
+          <!-- Bottoms Preferences -->
           <div class="survey-group">
-            <label>Favorite Warm Weather Essentials:</label>
+            <label>Bottoms Categories in Your Closet:</label>
             <div class="checkbox-grid">
-              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="T-shirt" checked> T-Shirts</label>
-              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Tank top"> Tank Tops</label>
-              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Shorts" checked> Shorts</label>
-              <label class="checkbox-label"><input type="checkbox" name="hotStyle" value="Linen Shirt"> Linen Shirts</label>
+              <label class="checkbox-label"><input type="checkbox" name="bottomsStyle" value="Jeans" checked> Jeans</label>
+              <label class="checkbox-label"><input type="checkbox" name="bottomsStyle" value="Chinos / Trousers" checked> Chinos / Trousers</label>
+              <label class="checkbox-label"><input type="checkbox" name="bottomsStyle" value="Shorts" checked> Shorts</label>
+              <label class="checkbox-label"><input type="checkbox" name="bottomsStyle" value="Sweatpants / Joggers"> Sweatpants / Joggers</label>
+              <label class="checkbox-label"><input type="checkbox" name="bottomsStyle" value="Skirts / Dresses"> Skirts / Dresses</label>
             </div>
           </div>
 
-          <!-- Cold Weather Layers -->
+          <!-- Outerwear & Layers -->
           <div class="survey-group">
-            <label>Favorite Cold Weather Layers:</label>
+            <label>Outerwear & Layering Essentials:</label>
             <div class="checkbox-grid">
-              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Hoodie" checked> Hoodies</label>
-              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Wool Coat" checked> Wool Coats</label>
-              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Puffer Jacket"> Puffer Jackets</label>
-              <label class="checkbox-label"><input type="checkbox" name="coldStyle" value="Thermal Base Layer"> Thermals</label>
+              <label class="checkbox-label"><input type="checkbox" name="layersStyle" value="Hoodie / Sweatshirt" checked> Hoodies & Sweatshirts</label>
+              <label class="checkbox-label"><input type="checkbox" name="layersStyle" value="Light Cardigan / Sweater" checked> Light Sweaters & Cardigans</label>
+              <label class="checkbox-label"><input type="checkbox" name="layersStyle" value="Denim / Leather Jacket"> Light Jackets (Denim, Leather)</label>
+              <label class="checkbox-label"><input type="checkbox" name="layersStyle" value="Puffer Jacket / Heavy Coat" checked> Heavy Coats / Puffers</label>
+              <label class="checkbox-label"><input type="checkbox" name="layersStyle" value="Windbreaker / Raincoat"> Raincoats / Windbreakers</label>
+            </div>
+          </div>
+
+          <!-- Shoes Preferences -->
+          <div class="survey-group">
+            <label>Footwear Options:</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label"><input type="checkbox" name="shoesStyle" value="Sneakers" checked> Sneakers</label>
+              <label class="checkbox-label"><input type="checkbox" name="shoesStyle" value="Boots" checked> Boots</label>
+              <label class="checkbox-label"><input type="checkbox" name="shoesStyle" value="Sandals / Slides"> Sandals / Slides</label>
+              <label class="checkbox-label"><input type="checkbox" name="shoesStyle" value="Loafers / Dress Shoes"> Loafers / Dress Shoes</label>
+            </div>
+          </div>
+
+          <!-- Accessories -->
+          <div class="survey-group">
+            <label>Favorite Accessories & Weather Gear:</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label"><input type="checkbox" name="accessoriesStyle" value="Sunglasses" checked> Sunglasses</label>
+              <label class="checkbox-label"><input type="checkbox" name="accessoriesStyle" value="Cap / Beanie" checked> Caps / Beanies</label>
+              <label class="checkbox-label"><input type="checkbox" name="accessoriesStyle" value="Scarf / Gloves"> Scarves & Gloves</label>
+              <label class="checkbox-label"><input type="checkbox" name="accessoriesStyle" value="Umbrella" checked> Umbrella</label>
             </div>
           </div>
 
@@ -145,7 +141,6 @@
         <p style="color: var(--text-muted); margin-bottom: 20px;">
           Enter your location to pull real-time condition data.
         </p>
-
         <div class="survey-group">
           <label for="initialCityInput">Enter Your City or Zip Code:</label>
           <div class="search-bar">
@@ -153,7 +148,6 @@
             <button type="button" id="detectLocationBtn" class="unit-toggle-btn">📍 Auto-Detect</button>
           </div>
         </div>
-
         <div class="survey-group">
           <label>Forecast Provider / Source:</label>
           <select id="weatherSource" class="custom-select">
@@ -161,7 +155,6 @@
             <option value="weatherapi">WeatherAPI / Weather Channel Stream</option>
           </select>
         </div>
-
         <div class="wizard-actions">
           <button type="button" id="backToStep1Btn" class="btn-secondary">← Back to Preferences</button>
           <button type="button" id="finishOnboardingBtn" class="btn-primary">Fetch Forecast & See Outfits</button>
@@ -193,85 +186,64 @@
           <button id="reconfigureBtn" style="background: none; border: none; color: var(--primary-color, #3b82f6); text-align: left; cursor: pointer; font-size: 0.85rem; margin-top: 16px;">⚙️ Reconfigure Profile & Location</button>
         </div>
 
-        <!-- Realistic Avatar & Recommendations Card -->
+        <!-- Comprehensive Outfit Recommendation Card -->
         <div class="card">
-          <h3>Today's Recommended Outfit</h3>
+          <h3>Today's Recommended Outfit Options</h3>
           <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
-            Matched to current forecast & your personal thermal thresholds
+            Tailored across categories based on current forecast & thermal tolerances
           </p>
-          <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-            
-            <!-- REALISTIC DETAILED AVATAR SVG -->
-            <div style="width: 140px; background: #f8fafc; border-radius: 16px; padding: 12px; text-align: center; border: 1px solid var(--border-color, #e2e8f0); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
-              <svg viewBox="0 0 120 220" width="110" height="200" xmlns="http://www.w3.org/2000/svg" id="avatarSvg">
-                <defs>
-                  <filter id="avatarShadow" x="-10%" y="-10%" width="120%" height="120%">
-                    <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.15"/>
-                  </filter>
-                </defs>
 
-                <!-- Head & Hair -->
-                <g id="avatarHead" filter="url(#avatarShadow)">
-                  <path id="avatarHair" d="M 42 12 Q 60 2 78 12 Q 82 25 78 30 Q 60 22 42 30 Z" fill="#2d3748" />
-                  <circle cx="60" cy="24" r="14" fill="#f6ad55" />
-                  <circle cx="55" cy="22" r="1.5" fill="#2d3748" />
-                  <circle cx="65" cy="22" r="1.5" fill="#2d3748" />
-                  <path d="M 56 28 Q 60 31 64 28" stroke="#2d3748" stroke-width="1.2" fill="none" stroke-linecap="round" />
-                  <rect x="56" y="37" width="8" height="8" fill="#e2e8f0" />
-                </g>
-
-                <!-- Outerwear (Jacket/Coat Layer) -->
-                <path id="avatarJacket" d="M 34 44 L 86 44 L 84 110 L 76 110 L 74 58 L 46 58 L 44 110 L 36 110 Z" fill="#2b6cb0" filter="url(#avatarShadow)" class="hidden" />
-
-                <!-- Torso Base Top -->
-                <path id="avatarTorso" d="M 38 45 L 82 45 Q 84 75 80 105 L 40 105 Q 36 75 38 45 Z" fill="#dd6b20" filter="url(#avatarShadow)" />
-
-                <!-- Arms & Sleeves -->
-                <g id="avatarArms">
-                  <rect id="armLeft" x="26" y="46" width="10" height="58" rx="5" fill="#f6ad55" />
-                  <rect id="armRight" x="84" y="46" width="10" height="58" rx="5" fill="#f6ad55" />
-                  <rect id="sleeveLeft" x="25" y="45" width="12" height="25" rx="4" fill="#dd6b20" />
-                  <rect id="sleeveRight" x="83" y="45" width="12" height="25" rx="4" fill="#dd6b20" />
-                </g>
-
-                <!-- Bottoms & Legs -->
-                <g id="avatarLegs" filter="url(#avatarShadow)">
-                  <path id="pantsFull" d="M 40 104 L 58 104 L 56 190 L 40 190 Z M 62 104 L 80 104 L 80 190 L 64 190 Z" fill="#2d3748" />
-                  <path id="pantsShorts" d="M 40 104 L 58 104 L 56 142 L 40 142 Z M 62 104 L 80 104 L 80 142 L 64 142 Z" fill="#4a5568" class="hidden" />
-                  <rect id="legsBare" x="42" y="142" width="12" height="48" fill="#f6ad55" class="hidden" />
-                  <rect id="legsBareRight" x="66" y="142" width="12" height="48" fill="#f6ad55" class="hidden" />
-                </g>
-
-                <!-- Footwear -->
-                <g id="avatarShoes" filter="url(#avatarShadow)">
-                  <path id="shoeLeft" d="M 36 188 Q 36 184 42 184 L 57 184 Q 58 190 58 196 L 36 196 Z" fill="#1a202c" />
-                  <path id="shoeRight" d="M 63 184 L 78 184 Q 84 184 84 188 L 84 196 L 62 196 Z" fill="#1a202c" />
-                </g>
-
-                <!-- Beanie/Hat -->
-                <path id="avatarHat" d="M 40 20 Q 60 4 80 20 L 82 26 L 38 26 Z" fill="#c53030" class="hidden" />
-              </svg>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Active Style Category -->
+            <div class="outfit-category">
+              <h4>Active Style Category</h4>
+              <div class="tags" id="styleCategoryRecommendations">
+                <span class="tag" style="background: var(--primary-color, #3b82f6); color: #fff;">Casual / Everyday</span>
+              </div>
             </div>
 
-            <!-- Recommendation Tags -->
-            <div style="flex: 1; min-width: 200px;">
-              <div class="outfit-category">
-                <h4>Tops & Outerwear</h4>
-                <div class="tags" id="topRecommendations">
-                  <span class="tag">Light Sweater</span>
-                </div>
+            <!-- Tops Options -->
+            <div class="outfit-category">
+              <h4>Recommended Tops</h4>
+              <div class="tags" id="topRecommendations">
+                <span class="tag">Breathable Cotton T-Shirt</span>
+                <span class="tag">Light Long Sleeve Shirt</span>
               </div>
-              <div class="outfit-category">
-                <h4>Bottoms</h4>
-                <div class="tags" id="bottomRecommendations">
-                  <span class="tag">Jeans</span>
-                </div>
+            </div>
+
+            <!-- Bottoms Options -->
+            <div class="outfit-category">
+              <h4>Recommended Bottoms</h4>
+              <div class="tags" id="bottomRecommendations">
+                <span class="tag">Slim Fit Jeans</span>
+                <span class="tag">Chinos</span>
               </div>
-              <div class="outfit-category">
-                <h4>Footwear & Weather Gear</h4>
-                <div class="tags" id="gearRecommendations">
-                  <span class="tag">Sneakers</span>
-                </div>
+            </div>
+
+            <!-- Layers / Outerwear Options -->
+            <div class="outfit-category">
+              <h4>Outerwear & Layering Options</h4>
+              <div class="tags" id="layerRecommendations">
+                <span class="tag">Light Cardigan</span>
+                <span class="tag">Zip Hoodie</span>
+              </div>
+            </div>
+
+            <!-- Shoes Options -->
+            <div class="outfit-category">
+              <h4>Footwear Options</h4>
+              <div class="tags" id="shoesRecommendations">
+                <span class="tag">Comfortable Sneakers</span>
+                <span class="tag">Casual Loafers</span>
+              </div>
+            </div>
+
+            <!-- Accessories & Gear Options -->
+            <div class="outfit-category">
+              <h4>Accessories & Gear</h4>
+              <div class="tags" id="gearRecommendations">
+                <span class="tag">Sunglasses</span>
+                <span class="tag">Baseball Cap</span>
               </div>
             </div>
           </div>
